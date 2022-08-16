@@ -22,8 +22,9 @@ Partial Class Anasayfa
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.Resim_Picturebox = New System.Windows.Forms.PictureBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Dogrula_Buton = New System.Windows.Forms.Button()
+        Me.Mouse_Koordinat_Ciz_CheckBox = New System.Windows.Forms.CheckBox()
         Me.Sil_Buton = New System.Windows.Forms.Button()
         Me.Sonraki_Foto_Buton = New System.Windows.Forms.Button()
         Me.Onceki_Foto_Buton = New System.Windows.Forms.Button()
@@ -43,29 +44,21 @@ Partial Class Anasayfa
         Me.Ayarlari_Kaydet = New System.Windows.Forms.Button()
         Me.Dosya_Sayisi_Label = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        CType(Me.Resim_Picturebox, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.Resim_Picturebox = New Labeling_Fotograf_Etiketleme_Yazılımı.MyPicturebox()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
+        Me.Panel3.SuspendLayout()
+        CType(Me.Resim_Picturebox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'Resim_Picturebox
-        '
-        Me.Resim_Picturebox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Resim_Picturebox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Resim_Picturebox.Location = New System.Drawing.Point(149, 8)
-        Me.Resim_Picturebox.Name = "Resim_Picturebox"
-        Me.Resim_Picturebox.Size = New System.Drawing.Size(854, 681)
-        Me.Resim_Picturebox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.Resim_Picturebox.TabIndex = 0
-        Me.Resim_Picturebox.TabStop = False
         '
         'Panel1
         '
         Me.Panel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel1.Controls.Add(Me.Dogrula_Buton)
+        Me.Panel1.Controls.Add(Me.Mouse_Koordinat_Ciz_CheckBox)
         Me.Panel1.Controls.Add(Me.Sil_Buton)
         Me.Panel1.Controls.Add(Me.Sonraki_Foto_Buton)
         Me.Panel1.Controls.Add(Me.Onceki_Foto_Buton)
@@ -75,6 +68,25 @@ Partial Class Anasayfa
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(135, 681)
         Me.Panel1.TabIndex = 1
+        '
+        'Dogrula_Buton
+        '
+        Me.Dogrula_Buton.Location = New System.Drawing.Point(11, 276)
+        Me.Dogrula_Buton.Name = "Dogrula_Buton"
+        Me.Dogrula_Buton.Size = New System.Drawing.Size(109, 61)
+        Me.Dogrula_Buton.TabIndex = 10
+        Me.Dogrula_Buton.Text = "Doğrula"
+        Me.Dogrula_Buton.UseVisualStyleBackColor = True
+        '
+        'Mouse_Koordinat_Ciz_CheckBox
+        '
+        Me.Mouse_Koordinat_Ciz_CheckBox.AutoSize = True
+        Me.Mouse_Koordinat_Ciz_CheckBox.Location = New System.Drawing.Point(11, 358)
+        Me.Mouse_Koordinat_Ciz_CheckBox.Name = "Mouse_Koordinat_Ciz_CheckBox"
+        Me.Mouse_Koordinat_Ciz_CheckBox.Size = New System.Drawing.Size(123, 17)
+        Me.Mouse_Koordinat_Ciz_CheckBox.TabIndex = 9
+        Me.Mouse_Koordinat_Ciz_CheckBox.Text = "Mouse Koordinat Çiz"
+        Me.Mouse_Koordinat_Ciz_CheckBox.UseVisualStyleBackColor = True
         '
         'Sil_Buton
         '
@@ -243,7 +255,7 @@ Partial Class Anasayfa
         Me.Ayarlari_Kaydet.Name = "Ayarlari_Kaydet"
         Me.Ayarlari_Kaydet.Size = New System.Drawing.Size(277, 35)
         Me.Ayarlari_Kaydet.TabIndex = 6
-        Me.Ayarlari_Kaydet.Text = "Kaydet"
+        Me.Ayarlari_Kaydet.Text = "Ayarları Kaydet"
         Me.Ayarlari_Kaydet.UseVisualStyleBackColor = True
         '
         'Dosya_Sayisi_Label
@@ -268,27 +280,49 @@ Partial Class Anasayfa
         Me.Label1.TabIndex = 10
         Me.Label1.Text = "Dosya Sayısı :"
         '
+        'Panel3
+        '
+        Me.Panel3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel3.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.Panel3.Controls.Add(Me.Resim_Picturebox)
+        Me.Panel3.Location = New System.Drawing.Point(149, 8)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(854, 677)
+        Me.Panel3.TabIndex = 11
+        '
+        'Resim_Picturebox
+        '
+        Me.Resim_Picturebox.BackColor = System.Drawing.Color.White
+        Me.Resim_Picturebox.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Resim_Picturebox.Location = New System.Drawing.Point(0, 0)
+        Me.Resim_Picturebox.Name = "Resim_Picturebox"
+        Me.Resim_Picturebox.Size = New System.Drawing.Size(854, 677)
+        Me.Resim_Picturebox.TabIndex = 0
+        Me.Resim_Picturebox.TabStop = False
+        '
         'Anasayfa
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1313, 701)
+        Me.Controls.Add(Me.Panel3)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Panel2)
-        Me.Controls.Add(Me.Resim_Picturebox)
         Me.Name = "Anasayfa"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Fotoğraf Etiketleme Yazılımı"
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
-        CType(Me.Resim_Picturebox, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
+        Me.Panel3.ResumeLayout(False)
+        CType(Me.Resim_Picturebox, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
-
-    Friend WithEvents Resim_Picturebox As PictureBox
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Sonraki_Foto_Buton As Button
     Friend WithEvents Onceki_Foto_Buton As Button
@@ -309,4 +343,8 @@ Partial Class Anasayfa
     Friend WithEvents Label1 As Label
     Friend WithEvents Ayarlari_Kaydet As Button
     Friend WithEvents Sil_Buton As Button
+    Friend WithEvents Mouse_Koordinat_Ciz_CheckBox As CheckBox
+    Friend WithEvents Panel3 As Panel
+    Friend WithEvents Resim_Picturebox As MyPicturebox
+    Friend WithEvents Dogrula_Buton As Button
 End Class

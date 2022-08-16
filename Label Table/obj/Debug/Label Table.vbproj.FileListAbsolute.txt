@@ -5,7 +5,6 @@ E:\Foto Etiketleme Yazılımı\Label Table\bin\Debug\Labeling Fotograf Etiketlem
 E:\Foto Etiketleme Yazılımı\Label Table\bin\Debug\Newtonsoft.Json.dll
 E:\Foto Etiketleme Yazılımı\Label Table\bin\Debug\Newtonsoft.Json.xml
 E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Label Table.vbproj.AssemblyReference.cache
-E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Label Table.vbproj.SuggestedBindingRedirects.cache
 E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Labeling_Fotograf_Etiketleme_Yazılımı.Anasayfa.resources
 E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Labeling_Fotograf_Etiketleme_Yazılımı.Resources.resources
 E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Label Table.vbproj.GenerateResource.cache
@@ -15,3 +14,4 @@ E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Label Table.vbproj.CopyComp
 E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Labeling Fotograf Etiketleme Yazılımı.exe
 E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Labeling Fotograf Etiketleme Yazılımı.xml
 E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Labeling Fotograf Etiketleme Yazılımı.pdb
+E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Label Table.vbproj.SuggestedBindingRedirects.cache

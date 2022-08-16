@@ -3,9 +3,21 @@ Imports Newtonsoft.Json
 
 Module Genel_Modul
     Public ColorList As New List(Of Color)
+    Public translateX As Single
+    Public translateY As Single
+
+    Public scaleOffsetX As Single
+    Public scaleOffsetY As Single
+
+    Public ReadOnly singlePoint(0) As Point
+    Public ReadOnly singlePointF(0) As PointF
+
+    Public Mousex, Mousey As Integer
+
+
 
     Sub Ana_Renkleri_Ekle()
-        ColorList.Add(Color.Lime)
+        ColorList.Add(Color.Red)
         ColorList.Add(Color.Yellow)
         ColorList.Add(SystemColors.HotTrack)
         ColorList.Add(Color.BlueViolet)
@@ -121,6 +133,7 @@ Module Genel_Modul
         Property Secim4Checkbox As Boolean
         Property Label4Text As String
 
+        Property MouseKoordinatCiz As Boolean
 
 
     End Class
