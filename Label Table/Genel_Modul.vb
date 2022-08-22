@@ -13,7 +13,7 @@ Module Genel_Modul
     Public ReadOnly singlePointF(0) As PointF
 
     Public Mousex, Mousey As Integer
-
+    Public SonEtiketAdi As String
 
 
     Sub Ana_Renkleri_Ekle()
@@ -24,7 +24,6 @@ Module Genel_Modul
         ColorList.Add(Color.Aqua)
         ColorList.Add(Color.Fuchsia)
         ColorList.Add(Color.DeepPink)
-        ColorList.Add(Color.Cyan)
         ColorList.Add(Color.Blue)
         ColorList.Add(Color.DarkMagenta)
         ColorList.Add(Color.DarkSalmon)
@@ -134,8 +133,22 @@ Module Genel_Modul
         Property Label4Text As String
 
         Property MouseKoordinatCiz As Boolean
+        Property SonEtiketiOtomatikYukle As Boolean
 
+        Property Favori1 As String
+        Property Favori2 As String
+        Property Favori3 As String
+        Property Favori4 As String
+        Property Favori5 As String
+        Property Favori6 As String
+        Property Favori7 As String
+        Property Favori8 As String
+        Property Favori9 As String
+        Property Favori10 As String
+        Property FavoriListesi() As ArrayList
+        Property YukluEtiketler As List(Of String)
 
+        Property TekHarfleriBuyukYap As Boolean
     End Class
 
 

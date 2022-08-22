@@ -15,3 +15,5 @@ E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Labeling Fotograf Etiketlem
 E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Labeling Fotograf Etiketleme Yazılımı.xml
 E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Labeling Fotograf Etiketleme Yazılımı.pdb
 E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Label Table.vbproj.SuggestedBindingRedirects.cache
+E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Labeling_Fotograf_Etiketleme_Yazılımı.Obje_isimlendirme_Formu.resources
+E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Labeling_Fotograf_Etiketleme_Yazılımı.Favori_Buton_Duzenleme_Formu.resources

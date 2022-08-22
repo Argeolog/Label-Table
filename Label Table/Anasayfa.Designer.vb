@@ -41,11 +41,13 @@ Partial Class Anasayfa
         Me.Secim_4_Checkbox = New System.Windows.Forms.CheckBox()
         Me.Secilen_Dosyalar_Listbox = New System.Windows.Forms.ListBox()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Son_Etiketi_Default_Getir = New System.Windows.Forms.CheckBox()
         Me.Ayarlari_Kaydet = New System.Windows.Forms.Button()
         Me.Dosya_Sayisi_Label = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Resim_Picturebox = New Labeling_Fotograf_Etiketleme_Yazılımı.MyPicturebox()
+        Me.Tek_Harfleri_Buyuk_Yap_Check = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.Panel3.SuspendLayout()
@@ -141,10 +143,11 @@ Partial Class Anasayfa
         '
         Me.Etiket_CheckList.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Etiket_CheckList.CheckOnClick = True
         Me.Etiket_CheckList.FormattingEnabled = True
-        Me.Etiket_CheckList.Location = New System.Drawing.Point(6, 147)
+        Me.Etiket_CheckList.Location = New System.Drawing.Point(6, 192)
         Me.Etiket_CheckList.Name = "Etiket_CheckList"
-        Me.Etiket_CheckList.Size = New System.Drawing.Size(277, 154)
+        Me.Etiket_CheckList.Size = New System.Drawing.Size(277, 109)
         Me.Etiket_CheckList.TabIndex = 1
         '
         'Secim_1_Checkbox
@@ -231,6 +234,8 @@ Partial Class Anasayfa
         '
         Me.Panel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel2.Controls.Add(Me.Tek_Harfleri_Buyuk_Yap_Check)
+        Me.Panel2.Controls.Add(Me.Son_Etiketi_Default_Getir)
         Me.Panel2.Controls.Add(Me.Ayarlari_Kaydet)
         Me.Panel2.Controls.Add(Me.Dosya_Sayisi_Label)
         Me.Panel2.Controls.Add(Me.Label1)
@@ -249,9 +254,19 @@ Partial Class Anasayfa
         Me.Panel2.Size = New System.Drawing.Size(292, 677)
         Me.Panel2.TabIndex = 10
         '
+        'Son_Etiketi_Default_Getir
+        '
+        Me.Son_Etiketi_Default_Getir.AutoSize = True
+        Me.Son_Etiketi_Default_Getir.Location = New System.Drawing.Point(6, 112)
+        Me.Son_Etiketi_Default_Getir.Name = "Son_Etiketi_Default_Getir"
+        Me.Son_Etiketi_Default_Getir.Size = New System.Drawing.Size(199, 17)
+        Me.Son_Etiketi_Default_Getir.TabIndex = 12
+        Me.Son_Etiketi_Default_Getir.Text = "Yeni Etikette En Son Eklediğimi Getir"
+        Me.Son_Etiketi_Default_Getir.UseVisualStyleBackColor = True
+        '
         'Ayarlari_Kaydet
         '
-        Me.Ayarlari_Kaydet.Location = New System.Drawing.Point(6, 108)
+        Me.Ayarlari_Kaydet.Location = New System.Drawing.Point(6, 151)
         Me.Ayarlari_Kaydet.Name = "Ayarlari_Kaydet"
         Me.Ayarlari_Kaydet.Size = New System.Drawing.Size(277, 35)
         Me.Ayarlari_Kaydet.TabIndex = 6
@@ -302,6 +317,16 @@ Partial Class Anasayfa
         Me.Resim_Picturebox.TabIndex = 0
         Me.Resim_Picturebox.TabStop = False
         '
+        'Tek_Harfleri_Buyuk_Yap_Check
+        '
+        Me.Tek_Harfleri_Buyuk_Yap_Check.AutoSize = True
+        Me.Tek_Harfleri_Buyuk_Yap_Check.Location = New System.Drawing.Point(6, 133)
+        Me.Tek_Harfleri_Buyuk_Yap_Check.Name = "Tek_Harfleri_Buyuk_Yap_Check"
+        Me.Tek_Harfleri_Buyuk_Yap_Check.Size = New System.Drawing.Size(136, 17)
+        Me.Tek_Harfleri_Buyuk_Yap_Check.TabIndex = 13
+        Me.Tek_Harfleri_Buyuk_Yap_Check.Text = "Tek Harfleri Büyük Yap"
+        Me.Tek_Harfleri_Buyuk_Yap_Check.UseVisualStyleBackColor = True
+        '
         'Anasayfa
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -347,4 +372,6 @@ Partial Class Anasayfa
     Friend WithEvents Panel3 As Panel
     Friend WithEvents Resim_Picturebox As MyPicturebox
     Friend WithEvents Dogrula_Buton As Button
+    Friend WithEvents Son_Etiketi_Default_Getir As CheckBox
+    Friend WithEvents Tek_Harfleri_Buyuk_Yap_Check As CheckBox
 End Class

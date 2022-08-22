@@ -105,11 +105,6 @@ Public Class MyPicturebox
     Protected Overrides Sub OnPaint(ByVal pe As PaintEventArgs)
         pe.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor
         service.ApplyTransform(pe.Graphics)
-
-
-
-
-
         MyBase.OnPaint(pe)
     End Sub
 End Class

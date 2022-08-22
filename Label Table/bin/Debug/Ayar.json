@@ -1,13 +1,39 @@
 {
   "KlasorYolu": null,
   "KayitKlasoru": "D:\\Yapay_Zeka\\Ham_Datalar\\Pts\\Part_1",
-  "Secim1Checkbox": true,
+  "Secim1Checkbox": false,
   "Label1Text": "3",
-  "Secim2Checkbox": true,
+  "Secim2Checkbox": false,
   "Label2Text": "4",
-  "Secim3Checkbox": true,
+  "Secim3Checkbox": false,
   "Label3Text": "Plaka",
   "Secim4Checkbox": false,
   "Label4Text": "100",
-  "MouseKoordinatCiz": true
+  "MouseKoordinatCiz": true,
+  "SonEtiketiOtomatikYukle": true,
+  "Favori1": "Plaka",
+  "Favori2": "Ford",
+  "Favori3": "Fav3",
+  "Favori4": "Fav4",
+  "Favori5": "Fav5",
+  "Favori6": "Fav6",
+  "Favori7": "Fav7",
+  "Favori8": "Fav8",
+  "Favori9": "Fav9",
+  "Favori10": "Fav10",
+  "FavoriListesi": [
+    "Plaka",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+  ],
+  "YukluEtiketler": [
+    "1",
+    "2",
+    "3",
+    "Plaka"
+  ],
+  "TekHarfleriBuyukYap": true
 }

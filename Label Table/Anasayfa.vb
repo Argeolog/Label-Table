@@ -1,12 +1,13 @@
 ﻿Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Runtime.InteropServices
+Imports System.Windows
 
 Public Class Anasayfa
     ReadOnly ResimFiltre As String = "*.jpg"
     ReadOnly ResimFiltre2 As String = "*.jpeg"
     Dim MouseAnlikRenct As Rectangle
-    Private RenctList As New List(Of Rectangle) ' Sort Ettiğimizde Sırası Kayıyordu. Bu yüzden kopyasını aldık eklenenl
+    Public RenctList As New List(Of Rectangle) ' Sort Ettiğimizde Sırası Kayıyordu. Bu yüzden kopyasını aldık eklenenl
 
 
     Dim CursorState As Byte
@@ -31,9 +32,10 @@ Public Class Anasayfa
 
     Dim BM1 As Bitmap 'GUARDA LA IMAGEN INICIAL
     Dim WTusuAktif As Boolean
-    Dim MouseEvent As MouseEventArgs ' Son Mouse Hareketini Alıp W Basıldığında Tekrar Gönderiyoruz..
-    Dim GirdiCikti As Boolean ' Klavyeden Tuş Girdi Çıktı Bilgisi Atanır
+    ' Dim MouseEvent As MouseEventArgs ' Son Mouse Hareketini Alıp W Basıldığında Tekrar Gönderiyoruz..
 
+    Dim GirdiCikti As Boolean ' Klavyeden Tuş Girdi Çıktı Bilgisi Atanır
+    Dim Grap As Graphics
 
 
     Private Sub Anasayfa_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -51,19 +53,10 @@ Public Class Anasayfa
                 Secilen_Dosyalar_Listbox.Items.AddRange(Directory.GetFiles(Sistem_Ayarlari.KayitKlasoru, ResimFiltre2))
             End If
 
-            Dosya_Sayisi_Label.Text = Secilen_Dosyalar_Listbox.Items.Count & "\0"
-            Secim_1_Checkbox.Checked = Sistem_Ayarlari.Secim1Checkbox
-            Secim_2_Checkbox.Checked = Sistem_Ayarlari.Secim2Checkbox
-            Secim_3_Checkbox.Checked = Sistem_Ayarlari.Secim3Checkbox
-            Secim_4_Checkbox.Checked = Sistem_Ayarlari.Secim4Checkbox
 
-            Label_1_TextBox.Text = Sistem_Ayarlari.Label1Text
-            Label_2_TextBox.Text = Sistem_Ayarlari.Label2Text
-            Label_3_TextBox.Text = Sistem_Ayarlari.Label3Text
-            Label_4_TextBox.Text = Sistem_Ayarlari.Label4Text
-
-            Mouse_Koordinat_Ciz_CheckBox.Checked = Sistem_Ayarlari.MouseKoordinatCiz
-
+            If Secilen_Dosyalar_Listbox.Items.Count > 0 Then Secilen_Dosyalar_Listbox.SelectedIndex = 0
+            Dosya_Sayisi_Label.Text = Secilen_Dosyalar_Listbox.Items.Count & "\" & Secilen_Dosyalar_Listbox.SelectedIndex + 1
+            Ayarlari_Yerlestir()
 
         Catch ex As Exception
             Hata_Gonder_TryCatch(ex)
@@ -72,7 +65,21 @@ Public Class Anasayfa
 
 
     End Sub
+    Sub Ayarlari_Yerlestir()
+        Secim_1_Checkbox.Checked = Sistem_Ayarlari.Secim1Checkbox
+        Secim_2_Checkbox.Checked = Sistem_Ayarlari.Secim2Checkbox
+        Secim_3_Checkbox.Checked = Sistem_Ayarlari.Secim3Checkbox
+        Secim_4_Checkbox.Checked = Sistem_Ayarlari.Secim4Checkbox
 
+        Label_1_TextBox.Text = Sistem_Ayarlari.Label1Text
+        Label_2_TextBox.Text = Sistem_Ayarlari.Label2Text
+        Label_3_TextBox.Text = Sistem_Ayarlari.Label3Text
+        Label_4_TextBox.Text = Sistem_Ayarlari.Label4Text
+
+        Mouse_Koordinat_Ciz_CheckBox.Checked = Sistem_Ayarlari.MouseKoordinatCiz
+        Son_Etiketi_Default_Getir.Checked = Sistem_Ayarlari.SonEtiketiOtomatikYukle
+        Tek_Harfleri_Buyuk_Yap_Check.Checked = Sistem_Ayarlari.TekHarfleriBuyukYap
+    End Sub
 
 
 
@@ -91,9 +98,7 @@ Public Class Anasayfa
 
     End Sub
 
-    Private Sub Resim_Picturebox_Click(sender As Object, e As EventArgs)
 
-    End Sub
 
     Private Sub Kayit_Klasoru_Sec_Buton_Click(sender As Object, e As EventArgs) Handles Kayit_Klasoru_Sec_Buton.Click
 
@@ -110,9 +115,6 @@ Public Class Anasayfa
 
 
         Sistem_Ayarlari.MouseKoordinatCiz = Mouse_Koordinat_Ciz_CheckBox.Checked
-        If Sistem_Ayarlari.MouseKoordinatCiz Then
-
-        End If
         Ayarlari_Yaz()
 
 
@@ -135,7 +137,8 @@ Public Class Anasayfa
         Sistem_Ayarlari.Label2Text = Label_2_TextBox.Text
         Sistem_Ayarlari.Label3Text = Label_3_TextBox.Text
         Sistem_Ayarlari.Label4Text = Label_4_TextBox.Text
-
+        Sistem_Ayarlari.SonEtiketiOtomatikYukle = Son_Etiketi_Default_Getir.Checked
+        Sistem_Ayarlari.TekHarfleriBuyukYap = Tek_Harfleri_Buyuk_Yap_Check.Checked
         Ayarlari_Yaz()
 
 
@@ -164,12 +167,37 @@ Public Class Anasayfa
                 RenctList.Clear()
                 Etiket_CheckList.Items.Clear()
             End If
+            Dosya_Sayisi_Label.Text = Secilen_Dosyalar_Listbox.Items.Count & "\" & Secilen_Dosyalar_Listbox.SelectedIndex + 1
 
         End If
     End Sub
 
     Private Sub Dogrula_Buton_Click(sender As Object, e As EventArgs) Handles Dogrula_Buton.Click
         Resim_Picturebox.BackColor = Color.FromArgb(255, 46, 204, 113)
+    End Sub
+
+    Private Sub Resim_Picturebox_Click(sender As Object, e As EventArgs) Handles Resim_Picturebox.Click
+
+
+    End Sub
+
+    Private Sub Etiket_CheckList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Etiket_CheckList.SelectedIndexChanged
+        ' Resim_Picturebox_Paint(Resim_Picturebox, Grap)
+        'Resim_Picturebox.invo
+
+        'Dim l_gr_work As Graphics = Resim_Picturebox.CreateGraphics()
+        'Dim l_rt_work As New Rectangle(0, 0, Resim_Picturebox.Width, Resim_Picturebox.Height)
+        'Dim l_pe_work As New PaintEventArgs(l_gr_work, l_rt_work)
+        'Resim_Picturebox_Paint(Resim_Picturebox, l_pe_work)
+
+        'Resim_Picturebox.Refresh()
+
+        'Resim_Picturebox.Invalidate()
+
+
+
+
+
     End Sub
 
     Private Sub Secilen_Dosyalar_Listbox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Secilen_Dosyalar_Listbox.SelectedIndexChanged
@@ -194,6 +222,7 @@ Public Class Anasayfa
                 End If
                 File.Delete(Secilen_Dosyalar_Listbox.Items(Secilen_Dosyalar_Listbox.SelectedIndex))
                 Secilen_Dosyalar_Listbox.Items.RemoveAt(Secilen)
+                Etiket_CheckList.Items.RemoveAt(Secilen)
                 SonTiklananID = -2
                 Foto_Sec(Secilen, False)
             End If
@@ -203,8 +232,10 @@ Public Class Anasayfa
     End Sub
 
 
-
+    Dim RX As PaintEventArgs
     Private Sub Resim_Picturebox_Paint(sender As Object, e As PaintEventArgs) Handles Resim_Picturebox.Paint
+
+
 
 
         Try
@@ -233,21 +264,38 @@ Public Class Anasayfa
                 End If
 
             End If
+        Catch ex As Exception
+            Hata_Gonder_TryCatch(ex)
+        End Try
+        Try
 
-            If RenctList.Count > 0 Then
+
+            If RenctList.Count > 0 AndAlso RenctList.Count = Etiket_CheckList.Items.Count Then
 
                 Dim CopyLocation(RenctList.Count - 1) As Rectangle
                 TryCast(RenctList, ICollection).CopyTo(CopyLocation, 0)
 
+
                 Dim i As Integer = 0
                 For Each Renc As Rectangle In CopyLocation
 
-                    Using pen As New Pen(ColorList(i), 1)
-                        e.Graphics.DrawRectangle(pen, Renc)
-                    End Using
+                    If Etiket_CheckList.GetItemCheckState(i) = CheckState.Checked Then
+                        Using pen As New Pen(ColorList(i), 1)
+                            e.Graphics.DrawRectangle(pen, Renc)
+                            Dim Str As String = Etiket_CheckList.Items(i).ToString
+                            Dim sizeOfText As Size = TextRenderer.MeasureText(Str, New Font("Segoe UI", 5))
+                            sizeOfText.Width -= 3
+                            Dim rect As New Rectangle(New Point(Renc.X + 2, Renc.Y - 11), sizeOfText)
+                            Dim TransParanMavi As Color = Color.FromArgb(120, 0, 0, 255)
+                            Dim SolidBrushKalem As New SolidBrush(TransParanMavi)
+                            e.Graphics.FillRectangle(SolidBrushKalem, rect)
+                            e.Graphics.DrawString(Str, New Font("Segoe UI", 5, FontStyle.Bold), System.Drawing.Brushes.White, Renc.X + 2, Renc.Y - 11)
 
-                    e.Graphics.FillRectangles(Brushes.Black, Koordinat_Hesapla(Renc))
-                    e.Graphics.DrawRectangles(Pens.White, Koordinat_Hesapla(Renc))
+                        End Using
+
+                        e.Graphics.FillRectangles(Brushes.Black, Koordinat_Hesapla(Renc))
+                        e.Graphics.DrawRectangles(Pens.White, Koordinat_Hesapla(Renc))
+                    End If
                     i += 1
 
                 Next
@@ -256,9 +304,9 @@ Public Class Anasayfa
             End If
 
 
-
+            RX = e
         Catch ex As Exception
-            MsgBox(ex.Message)
+            Hata_Gonder_TryCatch(ex)
         End Try
 
 
@@ -283,194 +331,197 @@ Public Class Anasayfa
         Try
 
 
-            Dim Pointx As Point = Resim_Picturebox.GetImagePoint(ex.Location)
-            MouseEvent = ex
-
-            If MousePozisyonCizimMode = 2 Then
-                MousePozisyonCizimMode = 1
-
-            End If
+            If Secilen_Dosyalar_Listbox.SelectedIndex > -1 Then
 
 
+                Dim Pointx As Point = Resim_Picturebox.GetImagePoint(ex.Location)
 
-            If ex.Button = MouseButtons.Left And Cursor = DefaultCursor Then
-                MouseAnlikRenct = New Rectangle(MouseAnlikRenct.Left, MouseAnlikRenct.Top, Pointx.X - MouseAnlikRenct.Left, Pointx.Y - MouseAnlikRenct.Top)
-                Resim_Picturebox.Invalidate()
-            End If
 
-            If ex.Button = MouseButtons.Left Then
-                If SonCursorDurumu = Cizim_Enum_Mode.SolUst Then
-                    FocuslananRectangle.Height -= Pointx.Y - MouseilkTiklanildigiNokta.Y
-                    If Not FocuslananRectangle.Height < 5 Then
-                        FocuslananRectangle.Y -= -Pointx.Y + MouseilkTiklanildigiNokta.Y
-                    Else
-                        FocuslananRectangle.Height = 5
-                    End If
-                    FocuslananRectangle.Width -= Pointx.X - MouseilkTiklanildigiNokta.X
-                    If Not FocuslananRectangle.Width < 5 Then
-                        FocuslananRectangle.X -= -Pointx.X + MouseilkTiklanildigiNokta.X
-                    Else
-                        FocuslananRectangle.Width = 5
-                    End If
-                    RenctList(FocuslananRectangleListindex) = FocuslananRectangle
-                    MouseilkTiklanildigiNokta = New Point(Pointx.X, Pointx.Y)
-                    Resim_Picturebox.Invalidate()
-                ElseIf SonCursorDurumu = Cizim_Enum_Mode.SolAlt Then
-                    FocuslananRectangle.Height += Pointx.Y - MouseilkTiklanildigiNokta.Y
-                    FocuslananRectangle.Height = Math.Max(5, FocuslananRectangle.Height)
+                If MousePozisyonCizimMode = 2 Then
+                    MousePozisyonCizimMode = 1
 
-                    FocuslananRectangle.Width -= Pointx.X - MouseilkTiklanildigiNokta.X
-                    If Not FocuslananRectangle.Width < 5 Then
-                        FocuslananRectangle.X -= -Pointx.X + MouseilkTiklanildigiNokta.X
-                    Else
-                        FocuslananRectangle.Width = 5
-                    End If
-                    RenctList(FocuslananRectangleListindex) = FocuslananRectangle
-                    MouseilkTiklanildigiNokta = New Point(Pointx.X, Pointx.Y)
-                    Resim_Picturebox.Invalidate()
-                ElseIf SonCursorDurumu = Cizim_Enum_Mode.SagUst Then
-
-                    FocuslananRectangle.Height -= Pointx.Y - MouseilkTiklanildigiNokta.Y
-                    If Not FocuslananRectangle.Height < 5 Then
-                        FocuslananRectangle.Y -= -Pointx.Y + MouseilkTiklanildigiNokta.Y
-                    Else
-                        FocuslananRectangle.Height = 5
-                    End If
-
-                    FocuslananRectangle.Width += Pointx.X - MouseilkTiklanildigiNokta.X
-                    FocuslananRectangle.Width = Math.Max(5, FocuslananRectangle.Width)
-
-                    RenctList(FocuslananRectangleListindex) = FocuslananRectangle
-                    MouseilkTiklanildigiNokta = New Point(Pointx.X, Pointx.Y)
-                    Resim_Picturebox.Invalidate()
-                ElseIf SonCursorDurumu = Cizim_Enum_Mode.SagAlt Then
-
-                    FocuslananRectangle.Width += Pointx.X - MouseilkTiklanildigiNokta.X
-                    FocuslananRectangle.Width = Math.Max(5, FocuslananRectangle.Width)
-
-                    FocuslananRectangle.Height += Pointx.Y - MouseilkTiklanildigiNokta.Y
-                    FocuslananRectangle.Height = Math.Max(5, FocuslananRectangle.Height)
-
-                    RenctList(FocuslananRectangleListindex) = FocuslananRectangle
-                    MouseilkTiklanildigiNokta = New Point(Pointx.X, Pointx.Y)
-                    Resim_Picturebox.Invalidate()
                 End If
 
 
-            End If
 
-            If CizimAktif = False Then
-                Resim_Picturebox.Invalidate()
-                If ex.Button <> MouseButtons.Left Then
-                    CursorState = 0
-                    FocuslananRectangleListindex = 0
-                    For Each Rect As Rectangle In RenctList
+                If ex.Button = MouseButtons.Left And Cursor = DefaultCursor Then
+                    MouseAnlikRenct = New Rectangle(MouseAnlikRenct.Left, MouseAnlikRenct.Top, Pointx.X - MouseAnlikRenct.Left, Pointx.Y - MouseAnlikRenct.Top)
+                    Resim_Picturebox.Invalidate()
+                End If
 
-
-                        SolUstxEksi = Rect.X - MouseCursorReferans
-                        SolUstxArti = Rect.X + MouseCursorReferans
-                        SolUstyEksi = Rect.Y - MouseCursorReferans
-                        SolUstyArti = Rect.Y + MouseCursorReferans
-
-                        SolAltyEksi = (Rect.Height + Rect.Y) - MouseCursorReferans
-                        SolAltyArti = (Rect.Height + Rect.Y) + MouseCursorReferans
-                        SolAltxEksi = (Rect.X) - MouseCursorReferans
-                        SolAltxArti = (Rect.X) + MouseCursorReferans
-
-
-                        SagUstxEksi = (Rect.X + Rect.Width) - MouseCursorReferans ' Sağdan Sola
-                        SagUstxArti = (Rect.X + Rect.Width) + MouseCursorReferans
-                        SagUstyEksi = Rect.Y - MouseCursorReferans
-                        SagUstyArti = Rect.Y + MouseCursorReferans
-
-
-                        SagAltxEksi = (Rect.X + Rect.Width) - MouseCursorReferans
-                        SagAltxArti = (Rect.X + Rect.Width) + MouseCursorReferans
-                        SagAltyEksi = Rect.Y + Rect.Height - MouseCursorReferans
-                        SagAltyArti = Rect.Y + Rect.Height + MouseCursorReferans
-
-
-
-
-
-
-
-                        If Pointx.X > SolUstxEksi And Pointx.X < SolUstxArti And Pointx.Y > SolUstyEksi And Pointx.Y < SolUstyArti Then ' Üst Sol
-                            FocuslananRectangle = Rect
-                            Resim_Picturebox.Invalidate()
-
-                            Resim_Picturebox.Invalidate()
-                            CursorState = Cizim_Enum_Mode.SolUst
-                            Exit For
-                        ElseIf Pointx.X > SolAltxEksi And Pointx.X < SolAltxArti And Pointx.Y > SolAltyEksi And Pointx.Y < SolAltyArti Then ' Üst Sol
-                            FocuslananRectangle = Rect
-                            Resim_Picturebox.Invalidate()
-                            CursorState = Cizim_Enum_Mode.SolAlt
-                            Exit For
-
-                        ElseIf Pointx.X > SagUstxEksi And Pointx.X < SagUstxArti And Pointx.Y > SagUstyEksi And Pointx.Y < SagUstyArti Then ' Üst Sol
-                            FocuslananRectangle = Rect
-
-                            Resim_Picturebox.Invalidate()
-                            CursorState = Cizim_Enum_Mode.SagUst
-                            Exit For
-
-                        ElseIf Pointx.X > SagAltxEksi And Pointx.X < SagAltxArti And Pointx.Y > SagAltyEksi And Pointx.Y < SagAltyArti Then
-                            FocuslananRectangle = Rect
-                            Resim_Picturebox.Invalidate()
-                            CursorState = Cizim_Enum_Mode.SagAlt
-                            Exit For
-
-                        ElseIf Rect.Contains(Pointx.X - MouseCursorReferans, Pointx.Y - MouseCursorReferans) AndAlso WTusuAktif = True Then
-                            Dim Listx As New List(Of Rectangle)
-                            Listx = RenctList.OrderBy(Function(r) r.Width * r.Height).ToList() ' Burada Sort Ediyoruz. Büyük olan Önce İşaretlenmiş olsa Bile kaydırma yapılabilsin.
-
-                            For i = 0 To Listx.Count - 1
-                                If Listx(i).Contains(Pointx.X - MouseCursorReferans, Pointx.Y - MouseCursorReferans) Then
-                                    Rect = Listx(i)
-                                    FocuslananRectangleListindex = RenctList.IndexOf(Rect)
-                                    Exit For
-                                End If
-                            Next
-
-                            FocuslananRectangle = Rect
-                            Resim_Picturebox.Invalidate()
-                            CursorState = Cizim_Enum_Mode.MoveMode
-
-                            Exit For
+                If ex.Button = MouseButtons.Left Then
+                    If SonCursorDurumu = Cizim_Enum_Mode.SolUst Then
+                        FocuslananRectangle.Height -= Pointx.Y - MouseilkTiklanildigiNokta.Y
+                        If Not FocuslananRectangle.Height < 5 Then
+                            FocuslananRectangle.Y -= -Pointx.Y + MouseilkTiklanildigiNokta.Y
                         Else
-                            CursorState = 6
+                            FocuslananRectangle.Height = 5
                         End If
-                        FocuslananRectangleListindex += 1
-                    Next
-                    If SonCursorDurumu <> CursorState Then ' Bunu Yapmamızın Sebebi Mouse Sürekli Cursor Değişimi Olmasın
-                        SonCursorDurumu = CursorState
-                        If SonCursorDurumu = Cizim_Enum_Mode.MoveMode Then
-                            Cursor = Cursors.SizeAll
-
-                        ElseIf CursorState = Cizim_Enum_Mode.SolUst Then
-                            Cursor = Cursors.SizeNWSE
-                        ElseIf CursorState = Cizim_Enum_Mode.SolAlt Then
-                            Cursor = Cursors.SizeNESW
-                        ElseIf CursorState = Cizim_Enum_Mode.SagUst Then
-                            Cursor = Cursors.SizeNESW
-                        ElseIf CursorState = Cizim_Enum_Mode.SagAlt Then
-                            Cursor = Cursors.SizeNWSE
+                        FocuslananRectangle.Width -= Pointx.X - MouseilkTiklanildigiNokta.X
+                        If Not FocuslananRectangle.Width < 5 Then
+                            FocuslananRectangle.X -= -Pointx.X + MouseilkTiklanildigiNokta.X
                         Else
-                            Cursor = Cursors.Default
+                            FocuslananRectangle.Width = 5
+                        End If
+                        RenctList(FocuslananRectangleListindex) = FocuslananRectangle
+                        MouseilkTiklanildigiNokta = New Point(Pointx.X, Pointx.Y)
+                        Resim_Picturebox.Invalidate()
+                    ElseIf SonCursorDurumu = Cizim_Enum_Mode.SolAlt Then
+                        FocuslananRectangle.Height += Pointx.Y - MouseilkTiklanildigiNokta.Y
+                        FocuslananRectangle.Height = Math.Max(5, FocuslananRectangle.Height)
+
+                        FocuslananRectangle.Width -= Pointx.X - MouseilkTiklanildigiNokta.X
+                        If Not FocuslananRectangle.Width < 5 Then
+                            FocuslananRectangle.X -= -Pointx.X + MouseilkTiklanildigiNokta.X
+                        Else
+                            FocuslananRectangle.Width = 5
+                        End If
+                        RenctList(FocuslananRectangleListindex) = FocuslananRectangle
+                        MouseilkTiklanildigiNokta = New Point(Pointx.X, Pointx.Y)
+                        Resim_Picturebox.Invalidate()
+                    ElseIf SonCursorDurumu = Cizim_Enum_Mode.SagUst Then
+
+                        FocuslananRectangle.Height -= Pointx.Y - MouseilkTiklanildigiNokta.Y
+                        If Not FocuslananRectangle.Height < 5 Then
+                            FocuslananRectangle.Y -= -Pointx.Y + MouseilkTiklanildigiNokta.Y
+                        Else
+                            FocuslananRectangle.Height = 5
+                        End If
+
+                        FocuslananRectangle.Width += Pointx.X - MouseilkTiklanildigiNokta.X
+                        FocuslananRectangle.Width = Math.Max(5, FocuslananRectangle.Width)
+
+                        RenctList(FocuslananRectangleListindex) = FocuslananRectangle
+                        MouseilkTiklanildigiNokta = New Point(Pointx.X, Pointx.Y)
+                        Resim_Picturebox.Invalidate()
+                    ElseIf SonCursorDurumu = Cizim_Enum_Mode.SagAlt Then
+
+                        FocuslananRectangle.Width += Pointx.X - MouseilkTiklanildigiNokta.X
+                        FocuslananRectangle.Width = Math.Max(5, FocuslananRectangle.Width)
+
+                        FocuslananRectangle.Height += Pointx.Y - MouseilkTiklanildigiNokta.Y
+                        FocuslananRectangle.Height = Math.Max(5, FocuslananRectangle.Height)
+
+                        RenctList(FocuslananRectangleListindex) = FocuslananRectangle
+                        MouseilkTiklanildigiNokta = New Point(Pointx.X, Pointx.Y)
+                        Resim_Picturebox.Invalidate()
+                    End If
+
+
+                End If
+
+                If CizimAktif = False Then
+                    Resim_Picturebox.Invalidate()
+                    If ex.Button <> MouseButtons.Left Then
+                        CursorState = 0
+                        FocuslananRectangleListindex = 0
+                        For Each Rect As Rectangle In RenctList
+
+
+                            SolUstxEksi = Rect.X - MouseCursorReferans
+                            SolUstxArti = Rect.X + MouseCursorReferans
+                            SolUstyEksi = Rect.Y - MouseCursorReferans
+                            SolUstyArti = Rect.Y + MouseCursorReferans
+
+                            SolAltyEksi = (Rect.Height + Rect.Y) - MouseCursorReferans
+                            SolAltyArti = (Rect.Height + Rect.Y) + MouseCursorReferans
+                            SolAltxEksi = (Rect.X) - MouseCursorReferans
+                            SolAltxArti = (Rect.X) + MouseCursorReferans
+
+
+                            SagUstxEksi = (Rect.X + Rect.Width) - MouseCursorReferans ' Sağdan Sola
+                            SagUstxArti = (Rect.X + Rect.Width) + MouseCursorReferans
+                            SagUstyEksi = Rect.Y - MouseCursorReferans
+                            SagUstyArti = Rect.Y + MouseCursorReferans
+
+
+                            SagAltxEksi = (Rect.X + Rect.Width) - MouseCursorReferans
+                            SagAltxArti = (Rect.X + Rect.Width) + MouseCursorReferans
+                            SagAltyEksi = Rect.Y + Rect.Height - MouseCursorReferans
+                            SagAltyArti = Rect.Y + Rect.Height + MouseCursorReferans
+
+
+
+
+
+
+
+                            If Pointx.X > SolUstxEksi And Pointx.X < SolUstxArti And Pointx.Y > SolUstyEksi And Pointx.Y < SolUstyArti Then ' Üst Sol
+                                FocuslananRectangle = Rect
+                                Resim_Picturebox.Invalidate()
+
+                                Resim_Picturebox.Invalidate()
+                                CursorState = Cizim_Enum_Mode.SolUst
+                                Exit For
+                            ElseIf Pointx.X > SolAltxEksi And Pointx.X < SolAltxArti And Pointx.Y > SolAltyEksi And Pointx.Y < SolAltyArti Then ' Üst Sol
+                                FocuslananRectangle = Rect
+                                Resim_Picturebox.Invalidate()
+                                CursorState = Cizim_Enum_Mode.SolAlt
+                                Exit For
+
+                            ElseIf Pointx.X > SagUstxEksi And Pointx.X < SagUstxArti And Pointx.Y > SagUstyEksi And Pointx.Y < SagUstyArti Then ' Üst Sol
+                                FocuslananRectangle = Rect
+
+                                Resim_Picturebox.Invalidate()
+                                CursorState = Cizim_Enum_Mode.SagUst
+                                Exit For
+
+                            ElseIf Pointx.X > SagAltxEksi And Pointx.X < SagAltxArti And Pointx.Y > SagAltyEksi And Pointx.Y < SagAltyArti Then
+                                FocuslananRectangle = Rect
+                                Resim_Picturebox.Invalidate()
+                                CursorState = Cizim_Enum_Mode.SagAlt
+                                Exit For
+
+                            ElseIf Rect.Contains(Pointx.X - MouseCursorReferans, Pointx.Y - MouseCursorReferans) AndAlso WTusuAktif = True Then
+                                Dim Listx As New List(Of Rectangle)
+                                Listx = RenctList.OrderBy(Function(r) r.Width * r.Height).ToList() ' Burada Sort Ediyoruz. Büyük olan Önce İşaretlenmiş olsa Bile kaydırma yapılabilsin.
+
+                                For i = 0 To Listx.Count - 1
+                                    If Listx(i).Contains(Pointx.X - MouseCursorReferans, Pointx.Y - MouseCursorReferans) Then
+                                        Rect = Listx(i)
+                                        FocuslananRectangleListindex = RenctList.IndexOf(Rect)
+                                        Exit For
+                                    End If
+                                Next
+
+                                FocuslananRectangle = Rect
+                                Resim_Picturebox.Invalidate()
+                                CursorState = Cizim_Enum_Mode.MoveMode
+
+                                Exit For
+                            Else
+                                CursorState = 6
+                            End If
+                            FocuslananRectangleListindex += 1
+                        Next
+                        If SonCursorDurumu <> CursorState Then ' Bunu Yapmamızın Sebebi Mouse Sürekli Cursor Değişimi Olmasın
+                            SonCursorDurumu = CursorState
+                            If SonCursorDurumu = Cizim_Enum_Mode.MoveMode Then
+                                Cursor = Cursors.SizeAll
+
+                            ElseIf CursorState = Cizim_Enum_Mode.SolUst Then
+                                Cursor = Cursors.SizeNWSE
+                            ElseIf CursorState = Cizim_Enum_Mode.SolAlt Then
+                                Cursor = Cursors.SizeNESW
+                            ElseIf CursorState = Cizim_Enum_Mode.SagUst Then
+                                Cursor = Cursors.SizeNESW
+                            ElseIf CursorState = Cizim_Enum_Mode.SagAlt Then
+                                Cursor = Cursors.SizeNWSE
+                            Else
+                                Cursor = Cursors.Default
+                            End If
                         End If
                     End If
                 End If
+
+                If Cursor = Cursors.SizeAll And KaydirmaAktif = True Then
+
+                    FocuslananRectangle.Location = New Point(Math.Abs(Pointx.X - ReferansXKoordinat), Math.Abs(Pointx.Y - ReferansYKoordinat)) ' Forumda Sağa Sola Gezdirme
+                    RenctList(FocuslananRectangleListindex) = FocuslananRectangle
+
+                    Resim_Picturebox.Invalidate()
+                End If
             End If
-
-            If Cursor = Cursors.SizeAll And KaydirmaAktif = True Then
-
-                FocuslananRectangle.Location = New Point(Math.Abs(Pointx.X - ReferansXKoordinat), Math.Abs(Pointx.Y - ReferansYKoordinat)) ' Forumda Sağa Sola Gezdirme
-                RenctList(FocuslananRectangleListindex) = FocuslananRectangle
-
-                Resim_Picturebox.Invalidate()
-            End If
-
         Catch exx As Exception
             Me.Text = exx.Message
         End Try
@@ -520,9 +571,6 @@ Public Class Anasayfa
             If er.Button = MouseButtons.Left And Cursor = DefaultCursor Then
                 If MouseAnlikRenct.Height >= 5 And MouseAnlikRenct.Width >= 5 Then
 
-                    RenctList.Add(MouseAnlikRenct)
-
-                    ' RenctList = RenctList.OrderBy(Function(r) r.Width * r.Height).ToList() ' Burada Sort Ediyoruz. Büyük olan Önce İşaretlenmiş olsa Bile kaydırma yapılabilsin.
 
                     If Secim_1_Checkbox.Checked = True And RenctList.Count = 1 Then
                         Etiket_CheckList.Items.Add(Label_1_TextBox.Text, True)
@@ -532,6 +580,25 @@ Public Class Anasayfa
                         Etiket_CheckList.Items.Add(Label_3_TextBox.Text, True)
                     ElseIf Secim_4_Checkbox.Checked = True And RenctList.Count = 4 Then
                         Etiket_CheckList.Items.Add(Label_4_TextBox.Text, True)
+                    Else
+                        Dim Obj As New Obje_isimlendirme_Formu
+                        Obj.Location = New Point(Cursor.Position.X, Cursor.Position.Y)
+
+                        Dim Locy As Integer = Cursor.Position.Y + Obj.Height
+                        Dim Locx As Integer = Cursor.Position.X + Obj.Width
+
+                        If Locy >= Screen.PrimaryScreen.WorkingArea.Size.Height Then
+                            Obj.Location = New Point(Obj.Location.X, Math.Abs(Obj.Location.Y - Obj.Height))
+                        End If
+
+                        If Locx >= Screen.PrimaryScreen.WorkingArea.Size.Width Then
+                            Obj.Location = New Point(Math.Abs(Obj.Location.X - Obj.Width), Obj.Location.Y)
+                        End If
+
+
+
+                        Obj.ShowDialog(Me)
+                        RenctList.Add(MouseAnlikRenct)
                     End If
 
 
@@ -562,12 +629,13 @@ Public Class Anasayfa
         If e.KeyCode = Keys.W Then
             If WTusuAktif = False Then
                 WTusuAktif = True
-                Resim_Picturebox_MouseMove(Resim_Picturebox, MouseEvent)
+                Resim_Picturebox.Refresh()
             End If
         ElseIf e.Control = True AndAlso e.KeyCode = Keys.Z AndAlso GirdiCikti = False Then
             GirdiCikti = True
             If RenctList.Count > 0 Then
                 RenctList.RemoveAt(RenctList.Count - 1)
+                Etiket_CheckList.Items.RemoveAt(Etiket_CheckList.Items.Count - 1)
                 Foto_Sec(SonTiklananID, True)
             End If
         End If
@@ -577,5 +645,16 @@ Public Class Anasayfa
     Private Sub Anasayfa_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp
         WTusuAktif = False
         GirdiCikti = False
+    End Sub
+
+    Private Sub Etiket_CheckList_MouseUp(sender As Object, e As MouseEventArgs) Handles Etiket_CheckList.MouseUp
+        Resim_Picturebox.Refresh()
+    End Sub
+
+
+    Private Sub Etiket_CheckList_KeyUp(sender As Object, e As KeyEventArgs) Handles Etiket_CheckList.KeyUp
+        If e.KeyCode = Keys.Space Then
+            Resim_Picturebox.Refresh()
+        End If
     End Sub
 End Class
