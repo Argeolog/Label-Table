@@ -10,6 +10,7 @@
             Etiket_Adi_Text.Text = SonEtiketAdi
         End If
         Etiket_Adi_Text.Focus()
+
     End Sub
 
     Private Sub Obje_isimlendirme_Formu_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -54,6 +55,7 @@
             Etiket_Adi_Text.Text = Etiket_Adi_Text.Text.ToUpper
         End If
         Anasayfa.Etiket_CheckList.Items.Add(Etiket_Adi_Text.Text, True)
+        EtiketKayitEdildi = True
         Me.Close()
     End Sub
     Private Sub Fav_Buton1_Click(sender As Object, e As EventArgs) Handles Fav_Buton1.Click
@@ -188,12 +190,18 @@
         Etiket_Adi_Text.Items.Clear()
         Sistem_Ayarlari.YukluEtiketler.Clear()
         Ayarlari_Yaz()
+
+
+
     End Sub
 
     Private Sub Obje_isimlendirme_Formu_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp
-        If e.KeyCode = Keys.Escape Then
-            Anasayfa.RenctList.RemoveAt(Anasayfa.RenctList.Count - 1)
-            Me.Close()
-        End If
+        'If e.KeyCode = Keys.Escape Then
+        '    If Anasayfa.RenctList.Count > 0 Then
+        '        Anasayfa.RenctList.RemoveAt(Anasayfa.RenctList.Count - 1)
+        '    End If
+
+        '    Me.Close()
+        'End If
     End Sub
 End Class

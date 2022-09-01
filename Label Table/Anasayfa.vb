@@ -1,12 +1,13 @@
 ﻿Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Runtime.InteropServices
+Imports System.Text
 Imports System.Windows
-
+Imports System.Xml
 Public Class Anasayfa
     ReadOnly ResimFiltre As String = "*.jpg"
     ReadOnly ResimFiltre2 As String = "*.jpeg"
-    Dim MouseAnlikRenct As Rectangle
+    Public MouseAnlikRenct As Rectangle
     Public RenctList As New List(Of Rectangle) ' Sort Ettiğimizde Sırası Kayıyordu. Bu yüzden kopyasını aldık eklenenl
 
 
@@ -30,12 +31,12 @@ Public Class Anasayfa
     ReadOnly PozisyonColor As Color = Color.FromArgb(80, 80, 80)
     ReadOnly MouseCursorReferans As Integer = 2 ' Sağ sol Kaydırma için mouse koordinatlarının eşik değeri
 
-    Dim BM1 As Bitmap 'GUARDA LA IMAGEN INICIAL
+
     Dim WTusuAktif As Boolean
     ' Dim MouseEvent As MouseEventArgs ' Son Mouse Hareketini Alıp W Basıldığında Tekrar Gönderiyoruz..
 
     Dim GirdiCikti As Boolean ' Klavyeden Tuş Girdi Çıktı Bilgisi Atanır
-    Dim Grap As Graphics
+    Dim islemYapilanDosyaAdi As String
 
 
     Private Sub Anasayfa_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -49,12 +50,15 @@ Public Class Anasayfa
             Me.DoubleBuffered = True
 
             If Ayarlari_Okundu() Then
-                Secilen_Dosyalar_Listbox.Items.AddRange(Directory.GetFiles(Sistem_Ayarlari.KayitKlasoru, ResimFiltre))
-                Secilen_Dosyalar_Listbox.Items.AddRange(Directory.GetFiles(Sistem_Ayarlari.KayitKlasoru, ResimFiltre2))
+                Secilen_Dosyalar_Listbox.Items.AddRange(Directory.GetFiles(Sistem_Ayarlari.KlasorYolu, ResimFiltre))
+                Secilen_Dosyalar_Listbox.Items.AddRange(Directory.GetFiles(Sistem_Ayarlari.KlasorYolu, ResimFiltre2))
             End If
 
 
-            If Secilen_Dosyalar_Listbox.Items.Count > 0 Then Secilen_Dosyalar_Listbox.SelectedIndex = 0
+            If Secilen_Dosyalar_Listbox.Items.Count > 0 Then
+                Secilen_Dosyalar_Listbox.SelectedIndex = 0
+            End If
+
             Dosya_Sayisi_Label.Text = Secilen_Dosyalar_Listbox.Items.Count & "\" & Secilen_Dosyalar_Listbox.SelectedIndex + 1
             Ayarlari_Yerlestir()
 
@@ -87,12 +91,13 @@ Public Class Anasayfa
 
     Private Sub Resim_Klasoru_Sec_Buton_Click(sender As Object, e As EventArgs) Handles Resim_Klasoru_Sec_Buton.Click
         Dim Op As New FolderBrowserDialog
+
         If Op.ShowDialog = DialogResult.OK Then
-            Sistem_Ayarlari.KayitKlasoru = Op.SelectedPath
+            Sistem_Ayarlari.KlasorYolu = Op.SelectedPath
             Ayarlari_Yaz()
             Secilen_Dosyalar_Listbox.Items.Clear()
-            Secilen_Dosyalar_Listbox.Items.AddRange(Directory.GetFiles(Sistem_Ayarlari.KayitKlasoru, ResimFiltre))
-            Secilen_Dosyalar_Listbox.Items.AddRange(Directory.GetFiles(Sistem_Ayarlari.KayitKlasoru, ResimFiltre2))
+            Secilen_Dosyalar_Listbox.Items.AddRange(Directory.GetFiles(Sistem_Ayarlari.KlasorYolu, ResimFiltre))
+            Secilen_Dosyalar_Listbox.Items.AddRange(Directory.GetFiles(Sistem_Ayarlari.KlasorYolu, ResimFiltre2))
 
         End If
 
@@ -104,9 +109,15 @@ Public Class Anasayfa
 
         Dim Op As New FolderBrowserDialog
         If Op.ShowDialog = DialogResult.OK Then
-            Sistem_Ayarlari.KlasorYolu = Op.SelectedPath
+            Sistem_Ayarlari.KayitKlasoru = Op.SelectedPath
+            If Directory.Exists(Sistem_Ayarlari.KayitKlasoru & "\Crop") = False Then
+                Directory.CreateDirectory(Sistem_Ayarlari.KayitKlasoru & "\Crop")
+            End If
+            If Directory.Exists(Sistem_Ayarlari.KayitKlasoru & "\Data") = False Then
+                Directory.CreateDirectory(Sistem_Ayarlari.KayitKlasoru & "\Data")
+            End If
             Ayarlari_Yaz()
-        End If
+            End If
     End Sub
 
     Private Sub Mouse_Koordinat_Ciz_CheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles Mouse_Koordinat_Ciz_CheckBox.CheckedChanged
@@ -123,11 +134,198 @@ Public Class Anasayfa
 
     End Sub
 
-    Private Sub Ayarlari_Kaydet_Click(sender As Object, e As EventArgs) Handles Ayarlari_Kaydet.Click
+    Private Sub Ayarlari_Kaydet_Click(sender As Object, e As EventArgs)
 
 
 
 
+
+
+
+
+    End Sub
+
+
+
+    Dim SonTiklananID As Integer = -2
+
+
+    Sub Foto_Sec(ByVal FotoID As Integer, ByVal YinedeYukle As Boolean, FotoDefaultAl As Boolean)
+        If FotoID < 0 Then
+            FotoID = 0
+        End If
+
+
+        If SonTiklananID <> FotoID Or YinedeYukle Then
+            If FotoDefaultAl = True Then
+                Resim_Picturebox.Foto_Default()
+            End If
+
+
+            If SonTiklananID <> -2 Then
+
+                Dim BirOncekiDosya As String = Secilen_Dosyalar_Listbox.Items(SonTiklananID)
+                islemYapilanDosyaAdi = BirOncekiDosya.Substring(BirOncekiDosya.LastIndexOf("\"), BirOncekiDosya.Length - BirOncekiDosya.LastIndexOf("\"))
+                islemYapilanDosyaAdi = islemYapilanDosyaAdi.TrimStart("\")
+                Dim DosyaAdi() As String = islemYapilanDosyaAdi.Split(".")
+                Dim FotoKlasoru() As String = BirOncekiDosya.Split("\")
+                If RenctList.Count > 0 Then
+
+                    For i = 0 To Etiket_CheckList.Items.Count - 1
+                        Dim EtiketAdi As String = Etiket_CheckList.Items(i).ToString
+                        Dim DosyaYolu As String = Sistem_Ayarlari.KayitKlasoru & "\Crop\" & EtiketAdi
+
+                        Dim KlasorYoluVar As Boolean = Directory.Exists(DosyaYolu)
+                        If KlasorYoluVar = False Then
+                            Directory.CreateDirectory(DosyaYolu)   ' Resimler Klasörü Oluşturuluyor
+                            KlasorYoluVar = Directory.Exists(DosyaYolu)
+                        End If
+
+                        If KlasorYoluVar = True Then
+
+                            DosyaYolu &= "\" & DosyaAdi(0) & "-" & i & "." & DosyaAdi(1)
+                            Foto_Kirp(Resim_Picturebox.Image, RenctList(i).Location.X, RenctList(i).Location.Y, RenctList(i).Width, RenctList(i).Height).Save(DosyaYolu)
+                            Dim Str As New StringBuilder
+                            Str.Append("<annotation>" & vbCrLf)
+                            Str.Append("<folder>" & FotoKlasoru(FotoKlasoru.Count - 2) & "</folder>" & vbCrLf)
+                            Str.Append("<filename>" & DosyaAdi(0) & "." & DosyaAdi(1) & "</filename>" & vbCrLf)
+                            Str.Append("<path>" & BirOncekiDosya & "</path>" & vbCrLf)
+                            Str.Append("<source>" & vbCrLf)
+                            Str.Append("<database>" & "Unknown" & "</database>" & vbCrLf)
+                            Str.Append("</source>" & vbCrLf)
+
+                            Str.Append("<size>" & vbCrLf)
+                            Str.Append("<width>" & Resim_Picturebox.Image.Width & "</width>" & vbCrLf)
+                            Str.Append("<height>" & Resim_Picturebox.Image.Height & "</height>" & vbCrLf)
+                            Str.Append("<depth>" & "3" & "</depth>" & vbCrLf)
+                            Str.Append("</size>" & vbCrLf)
+                            Str.Append("<segmented>" & 0 & "</segmented>" & vbCrLf)
+                            Dim Say As Integer = 0
+                            For Each Rec In RenctList
+                                Str.Append("<object>" & vbCrLf)
+                                Str.Append("<name>" & Etiket_CheckList.Items(Say).ToString & "</name>" & vbCrLf)
+                                Str.Append("<pose>" & "Unspecified" & "</pose>" & vbCrLf)
+                                Str.Append("<truncated>" & "0" & "</truncated>" & vbCrLf)
+                                Str.Append("<difficult>" & 0 & "</difficult>" & vbCrLf)
+                                Str.Append("<bndbox>" & vbCrLf)
+                                Str.Append("<xmin>" & Rec.X & "</xmin>" & vbCrLf)
+                                Str.Append("<ymin>" & Rec.Y & "</ymin>" & vbCrLf)
+                                Str.Append("<xmax>" & Rec.Width & "</xmax>" & vbCrLf)
+                                Str.Append("<ymax>" & Rec.Height & "</ymax>" & vbCrLf)
+                                Str.Append("</bndbox>" & vbCrLf)
+                                Str.Append("</object>" & vbCrLf)
+                                Say += 1
+                            Next
+                            Str.Append("</annotation>" & vbCrLf)
+
+                            Dim Strx As New StreamWriter(Sistem_Ayarlari.KayitKlasoru & "\Data\" & DosyaAdi(0) & ".xml", False, Encoding.UTF8)
+                            Strx.WriteLine(Str.ToString)
+                            Strx.Close()
+                        Else
+
+                            MessageBox.Show(Me, DosyaYolu & " Yolunda Klasör Oluşturulamadı !", "Hata !", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        End If
+
+
+                    Next
+                Else
+                    File.Delete(Sistem_Ayarlari.KayitKlasoru & "\Data\" & DosyaAdi(0) & ".xml")
+
+                End If
+
+            End If
+
+
+            SonTiklananID = FotoID
+            Dim SecilenDosya As String = Secilen_Dosyalar_Listbox.Items(FotoID)
+            Resim_Picturebox.ImageLocation = SecilenDosya
+
+
+
+            Resim_Picturebox.BackColor = Color.White
+            If YinedeYukle = False Then
+                RenctList.Clear()
+                Etiket_CheckList.Items.Clear()
+            End If
+            Etiketleri_Yukle()
+            Dosya_Sayisi_Label.Text = Secilen_Dosyalar_Listbox.Items.Count & "\" & Secilen_Dosyalar_Listbox.SelectedIndex + 1
+
+        End If
+    End Sub
+
+    Sub Etiketleri_Yukle()
+        Dim DosyaAdi() As String = Secilen_Dosyalar_Listbox.Items(Secilen_Dosyalar_Listbox.SelectedIndex).Split("\")
+        Dim DosyaAdi2() As String = DosyaAdi(DosyaAdi.Count - 1).Split(".")
+        Dim DosyaYolu As String = Sistem_Ayarlari.KayitKlasoru & "\Data\" & DosyaAdi2(0) & ".xml"
+        Dim DosyaVar As Boolean = File.Exists(DosyaYolu)
+
+        If DosyaVar Then
+
+            Dim EtiketlerList As New DataTable
+            Dim EtiketKonumlari As New DataTable
+            Dim AyarDataset As New DataSet
+            AyarDataset.ReadXml(DosyaYolu)
+
+            EtiketlerList = AyarDataset.Tables("object")
+            EtiketKonumlari = AyarDataset.Tables("bndbox")
+            If RenctList.Count > 0 Then
+                Etiket_CheckList.Items.Clear()
+                RenctList.Clear()
+            End If
+
+
+
+            Dim Rc As Rectangle
+            For i = 0 To EtiketlerList.Rows.Count - 1
+                Etiket_CheckList.Items.Add(EtiketlerList.Rows(i).Item("name"), True)
+                Dim Pt As New Point(EtiketKonumlari.Rows(i).Item("xmin"), EtiketKonumlari.Rows(i).Item("ymin"))
+                Dim Sizex As New Size(EtiketKonumlari.Rows(i).Item("xmax"), EtiketKonumlari.Rows(i).Item("ymax"))
+                Rc = New Rectangle(Pt, Sizex)
+                RenctList.Add(Rc)
+            Next
+        End If
+        Resim_Picturebox.Refresh()
+    End Sub
+
+
+    Private Function Foto_Kirp(ByRef KesilecekResim As Bitmap, ByVal RencX As Integer, ByVal RencY As Integer, ByVal RencWidth As Integer, ByVal RencHeight As Integer) As Bitmap
+        Dim Rec As New Rectangle(RencX, RencY, RencWidth, RencHeight)
+        Dim cropped As Bitmap = KesilecekResim.Clone(Rec, KesilecekResim.PixelFormat)
+        Return cropped
+    End Function
+
+
+    Private Sub Dogrula_Buton_Click(sender As Object, e As EventArgs) Handles Dogrula_Buton.Click
+        Resim_Picturebox.BackColor = Color.FromArgb(255, 46, 204, 113)
+    End Sub
+
+    Private Sub Resim_Picturebox_Click(sender As Object, e As EventArgs) Handles Resim_Picturebox.Click
+
+
+    End Sub
+
+    Private Sub Secilen_Dosyalar_Listbox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Secilen_Dosyalar_Listbox.SelectedIndexChanged
+        Foto_Sec(Secilen_Dosyalar_Listbox.SelectedIndex, False, True)
+
+    End Sub
+
+    Private Sub Sonraki_Foto_Buton_Click(sender As Object, e As EventArgs) Handles Sonraki_Foto_Buton.Click
+        Foto_Sec(Secilen_Dosyalar_Listbox.SelectedIndex + 1, False, True)
+
+    End Sub
+
+    Private Sub Onceki_Foto_Buton_Click(sender As Object, e As EventArgs) Handles Onceki_Foto_Buton.Click
+        Foto_Sec(Secilen_Dosyalar_Listbox.SelectedIndex - 1, False, True)
+    End Sub
+
+    Private Sub Veri_Analiz_Buton_Click(sender As Object, e As EventArgs) Handles Veri_Analiz_Buton.Click
+        If Application.OpenForms().OfType(Of Veri_Toplama_Analiz_Formu).Any = False Then ' Form Açıkmı Kontrolu..
+            Veri_Toplama_Analiz_Formu.Show(Me)
+        End If
+
+    End Sub
+
+    Sub Secimleri_Kaydet()
         Sistem_Ayarlari.Secim1Checkbox = Secim_1_Checkbox.Checked
         Sistem_Ayarlari.Secim2Checkbox = Secim_2_Checkbox.Checked
         Sistem_Ayarlari.Secim3Checkbox = Secim_3_Checkbox.Checked
@@ -140,77 +338,15 @@ Public Class Anasayfa
         Sistem_Ayarlari.SonEtiketiOtomatikYukle = Son_Etiketi_Default_Getir.Checked
         Sistem_Ayarlari.TekHarfleriBuyukYap = Tek_Harfleri_Buyuk_Yap_Check.Checked
         Ayarlari_Yaz()
-
-
-
     End Sub
 
-
-
-    Dim SonTiklananID As Integer = -2
-
-
-
-    Sub Foto_Sec(ByVal FotoID As Integer, ByVal YinedeYukle As Boolean)
-        If FotoID < 0 Then
-            FotoID = 0
-        End If
-
-        If SonTiklananID <> FotoID Or YinedeYukle Then
-            SonTiklananID = FotoID
-            Secilen_Dosyalar_Listbox.SelectedIndex = FotoID
-            Dim SecilenDosya As String = Secilen_Dosyalar_Listbox.Items(FotoID)
-            Resim_Picturebox.ImageLocation = SecilenDosya
-            BM1 = New Bitmap(Image.FromFile(SecilenDosya))
-            Resim_Picturebox.BackColor = Color.White
-            If YinedeYukle = False Then
-                RenctList.Clear()
-                Etiket_CheckList.Items.Clear()
-            End If
-            Dosya_Sayisi_Label.Text = Secilen_Dosyalar_Listbox.Items.Count & "\" & Secilen_Dosyalar_Listbox.SelectedIndex + 1
-
-        End If
-    End Sub
-
-    Private Sub Dogrula_Buton_Click(sender As Object, e As EventArgs) Handles Dogrula_Buton.Click
-        Resim_Picturebox.BackColor = Color.FromArgb(255, 46, 204, 113)
-    End Sub
-
-    Private Sub Resim_Picturebox_Click(sender As Object, e As EventArgs) Handles Resim_Picturebox.Click
-
-
-    End Sub
 
     Private Sub Etiket_CheckList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Etiket_CheckList.SelectedIndexChanged
-        ' Resim_Picturebox_Paint(Resim_Picturebox, Grap)
-        'Resim_Picturebox.invo
-
-        'Dim l_gr_work As Graphics = Resim_Picturebox.CreateGraphics()
-        'Dim l_rt_work As New Rectangle(0, 0, Resim_Picturebox.Width, Resim_Picturebox.Height)
-        'Dim l_pe_work As New PaintEventArgs(l_gr_work, l_rt_work)
-        'Resim_Picturebox_Paint(Resim_Picturebox, l_pe_work)
-
-        'Resim_Picturebox.Refresh()
-
-        'Resim_Picturebox.Invalidate()
-
-
-
-
 
     End Sub
 
-    Private Sub Secilen_Dosyalar_Listbox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Secilen_Dosyalar_Listbox.SelectedIndexChanged
-        Foto_Sec(Secilen_Dosyalar_Listbox.SelectedIndex, False)
-    End Sub
+    Private Sub Label_2_TextBox_TextChanged(sender As Object, e As EventArgs) Handles Label_2_TextBox.TextChanged
 
-    Private Sub Sonraki_Foto_Buton_Click(sender As Object, e As EventArgs) Handles Sonraki_Foto_Buton.Click
-        Foto_Sec(Secilen_Dosyalar_Listbox.SelectedIndex + 1, False)
-
-    End Sub
-
-    Private Sub Onceki_Foto_Buton_Click(sender As Object, e As EventArgs) Handles Onceki_Foto_Buton.Click
-        Foto_Sec(Secilen_Dosyalar_Listbox.SelectedIndex - 1, False)
     End Sub
 
     Private Sub Sil_Buton_Click(sender As Object, e As EventArgs) Handles Sil_Buton.Click
@@ -224,19 +360,18 @@ Public Class Anasayfa
                 Secilen_Dosyalar_Listbox.Items.RemoveAt(Secilen)
                 Etiket_CheckList.Items.RemoveAt(Secilen)
                 SonTiklananID = -2
-                Foto_Sec(Secilen, False)
+                Foto_Sec(Secilen, False, True)
             End If
         End If
 
 
     End Sub
 
+    Private Sub Label_3_TextBox_TextChanged(sender As Object, e As EventArgs) Handles Label_3_TextBox.TextChanged
 
-    Dim RX As PaintEventArgs
+    End Sub
+
     Private Sub Resim_Picturebox_Paint(sender As Object, e As PaintEventArgs) Handles Resim_Picturebox.Paint
-
-
-
 
         Try
 
@@ -304,12 +439,16 @@ Public Class Anasayfa
             End If
 
 
-            RX = e
+
         Catch ex As Exception
             Hata_Gonder_TryCatch(ex)
         End Try
 
 
+
+    End Sub
+
+    Private Sub Label_4_TextBox_TextChanged(sender As Object, e As EventArgs) Handles Label_4_TextBox.TextChanged
 
     End Sub
 
@@ -322,8 +461,20 @@ Public Class Anasayfa
         Return KoordinatList
     End Function
 
+    Private Sub Oto_Secimleri_Kaldir_CheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles Oto_Secimleri_Kaldir_CheckBox.CheckedChanged
+        If Oto_Secimleri_Kaldir_CheckBox.Checked = True Then
+            Secim_1_Checkbox.Checked = False
+            Secim_2_Checkbox.Checked = False
+            Secim_3_Checkbox.Checked = False
+            Secim_4_Checkbox.Checked = False
+        Else
+            Secim_1_Checkbox.Checked = Sistem_Ayarlari.Secim1Checkbox
+            Secim_2_Checkbox.Checked = Sistem_Ayarlari.Secim2Checkbox
+            Secim_3_Checkbox.Checked = Sistem_Ayarlari.Secim3Checkbox
+            Secim_4_Checkbox.Checked = Sistem_Ayarlari.Secim4Checkbox
+        End If
 
-
+    End Sub
 
     Private Sub Resim_Picturebox_MouseMove(sender As Object, ex As MouseEventArgs) Handles Resim_Picturebox.MouseMove
 
@@ -570,19 +721,19 @@ Public Class Anasayfa
 
             If er.Button = MouseButtons.Left And Cursor = DefaultCursor Then
                 If MouseAnlikRenct.Height >= 5 And MouseAnlikRenct.Width >= 5 Then
-
-
-                    If Secim_1_Checkbox.Checked = True And RenctList.Count = 1 Then
+                    EtiketKayitEdildi = True
+                    If Secim_1_Checkbox.Checked = True And RenctList.Count = 0 Then
                         Etiket_CheckList.Items.Add(Label_1_TextBox.Text, True)
-                    ElseIf Secim_2_Checkbox.Checked = True And RenctList.Count = 2 Then
+                    ElseIf Secim_2_Checkbox.Checked = True And RenctList.Count = 1 Then
                         Etiket_CheckList.Items.Add(Label_2_TextBox.Text, True)
-                    ElseIf Secim_3_Checkbox.Checked = True And RenctList.Count = 3 Then
+                    ElseIf Secim_3_Checkbox.Checked = True And RenctList.Count = 2 Then
                         Etiket_CheckList.Items.Add(Label_3_TextBox.Text, True)
-                    ElseIf Secim_4_Checkbox.Checked = True And RenctList.Count = 4 Then
+                    ElseIf Secim_4_Checkbox.Checked = True And RenctList.Count = 3 Then
                         Etiket_CheckList.Items.Add(Label_4_TextBox.Text, True)
                     Else
-                        Dim Obj As New Obje_isimlendirme_Formu
-                        Obj.Location = New Point(Cursor.Position.X, Cursor.Position.Y)
+                        Dim Obj As New Obje_isimlendirme_Formu With {
+                            .Location = New Point(Cursor.Position.X, Cursor.Position.Y)
+                        }
 
                         Dim Locy As Integer = Cursor.Position.Y + Obj.Height
                         Dim Locx As Integer = Cursor.Position.X + Obj.Width
@@ -594,14 +745,14 @@ Public Class Anasayfa
                         If Locx >= Screen.PrimaryScreen.WorkingArea.Size.Width Then
                             Obj.Location = New Point(Math.Abs(Obj.Location.X - Obj.Width), Obj.Location.Y)
                         End If
-
-
-
+                        EtiketKayitEdildi = False
                         Obj.ShowDialog(Me)
-                        RenctList.Add(MouseAnlikRenct)
                     End If
 
-
+                    If EtiketKayitEdildi = True Then
+                        RenctList.Add(MouseAnlikRenct)
+                    End If
+                    Resim_Picturebox.Refresh()
                 Else
                     MouseAnlikRenct = Nothing
                 End If
@@ -617,6 +768,15 @@ Public Class Anasayfa
 
     Private Sub Resim_Picturebox_MouseLeave(sender As Object, e As EventArgs)
         MousePozisyonCizimMode = 2
+
+    End Sub
+
+    Private Sub Son_Etiketi_Default_Getir_CheckedChanged(sender As Object, e As EventArgs) Handles Son_Etiketi_Default_Getir.CheckedChanged
+
+
+    End Sub
+
+    Private Sub Tek_Harfleri_Buyuk_Yap_Check_CheckedChanged(sender As Object, e As EventArgs) Handles Tek_Harfleri_Buyuk_Yap_Check.CheckedChanged
 
     End Sub
 
@@ -636,7 +796,7 @@ Public Class Anasayfa
             If RenctList.Count > 0 Then
                 RenctList.RemoveAt(RenctList.Count - 1)
                 Etiket_CheckList.Items.RemoveAt(Etiket_CheckList.Items.Count - 1)
-                Foto_Sec(SonTiklananID, True)
+                Foto_Sec(SonTiklananID, True, False)
             End If
         End If
 
@@ -655,6 +815,55 @@ Public Class Anasayfa
     Private Sub Etiket_CheckList_KeyUp(sender As Object, e As KeyEventArgs) Handles Etiket_CheckList.KeyUp
         If e.KeyCode = Keys.Space Then
             Resim_Picturebox.Refresh()
+        ElseIf e.KeyCode = Keys.Delete Then
+            If MessageBox.Show(Me, "Seçilen Etiket Silinsin Mi ?", "İşlem Onayı !", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
+                RenctList.RemoveAt(Etiket_CheckList.SelectedIndex)
+                Etiket_CheckList.Items.RemoveAt(Etiket_CheckList.SelectedIndex)
+                Resim_Picturebox.Refresh()
+                Foto_Sec(SonTiklananID, False, True)
+
+            End If
         End If
+
+    End Sub
+
+    Private Sub Label_1_TextBox_Leave(sender As Object, e As EventArgs) Handles Label_1_TextBox.Leave
+        Secimleri_Kaydet()
+    End Sub
+
+    Private Sub Label_2_TextBox_Leave(sender As Object, e As EventArgs) Handles Label_2_TextBox.Leave
+        Secimleri_Kaydet()
+    End Sub
+
+    Private Sub Label_3_TextBox_Leave(sender As Object, e As EventArgs) Handles Label_3_TextBox.Leave
+        Secimleri_Kaydet()
+    End Sub
+
+    Private Sub Label_4_TextBox_Leave(sender As Object, e As EventArgs) Handles Label_4_TextBox.Leave
+        Secimleri_Kaydet()
+    End Sub
+
+    Private Sub Secim_2_Checkbox_Click(sender As Object, e As EventArgs) Handles Secim_2_Checkbox.Click
+
+    End Sub
+
+    Private Sub Secim_1_Checkbox_Click(sender As Object, e As EventArgs) Handles Secim_1_Checkbox.Click
+        Secimleri_Kaydet()
+    End Sub
+
+    Private Sub Secim_3_Checkbox_Click(sender As Object, e As EventArgs) Handles Secim_3_Checkbox.Click
+        Secimleri_Kaydet()
+    End Sub
+
+    Private Sub Secim_4_Checkbox_Click(sender As Object, e As EventArgs) Handles Secim_4_Checkbox.Click
+        Secimleri_Kaydet()
+    End Sub
+
+    Private Sub Son_Etiketi_Default_Getir_Click(sender As Object, e As EventArgs) Handles Son_Etiketi_Default_Getir.Click
+        Secimleri_Kaydet()
+    End Sub
+
+    Private Sub Tek_Harfleri_Buyuk_Yap_Check_Click(sender As Object, e As EventArgs) Handles Tek_Harfleri_Buyuk_Yap_Check.Click
+        Secimleri_Kaydet()
     End Sub
 End Class

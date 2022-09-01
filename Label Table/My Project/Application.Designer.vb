@@ -32,7 +32,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.Labeling_Fotograf_Etiketleme_Yazılımı.Anasayfa
+            Me.MainForm = Global.Label_Table_Foto_Etiketleme_Yazılımı.Anasayfa
         End Sub
     End Class
 End Namespace

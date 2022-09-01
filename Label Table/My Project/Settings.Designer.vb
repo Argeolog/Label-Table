@@ -64,9 +64,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.Labeling_Fotograf_Etiketleme_Yazılımı.My.MySettings
+        Friend ReadOnly Property Settings() As Global.Label_Table_Foto_Etiketleme_Yazılımı.My.MySettings
             Get
-                Return Global.Labeling_Fotograf_Etiketleme_Yazılımı.My.MySettings.Default
+                Return Global.Label_Table_Foto_Etiketleme_Yazılımı.My.MySettings.Default
             End Get
         End Property
     End Module

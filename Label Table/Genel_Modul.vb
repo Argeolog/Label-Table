@@ -5,16 +5,10 @@ Module Genel_Modul
     Public ColorList As New List(Of Color)
     Public translateX As Single
     Public translateY As Single
-
-    Public scaleOffsetX As Single
-    Public scaleOffsetY As Single
-
     Public ReadOnly singlePoint(0) As Point
     Public ReadOnly singlePointF(0) As PointF
-
-    Public Mousex, Mousey As Integer
     Public SonEtiketAdi As String
-
+    Public EtiketKayitEdildi As Boolean
 
     Sub Ana_Renkleri_Ekle()
         ColorList.Add(Color.Red)
@@ -110,7 +104,6 @@ Module Genel_Modul
 
             Dim AyarYaz As New StreamWriter(Application.StartupPath & "\Ayar.json")
             AyarYaz.Write(JsonConvert.SerializeObject(Sistem_Ayarlari, Formatting.Indented))
-            AyarYaz.WriteLine(Sistem_Ayarlari.KlasorYolu)
             AyarYaz.Close()
         Catch ex As Exception
             Hata_Gonder_TryCatch(ex)

@@ -17,3 +17,24 @@ E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Labeling Fotograf Etiketlem
 E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Label Table.vbproj.SuggestedBindingRedirects.cache
 E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Labeling_Fotograf_Etiketleme_Yazılımı.Obje_isimlendirme_Formu.resources
 E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Labeling_Fotograf_Etiketleme_Yazılımı.Favori_Buton_Duzenleme_Formu.resources
+E:\Foto Etiketleme Yazılımı\Label Table\obj\Debug\Labeling_Fotograf_Etiketleme_Yazılımı.Veri_Toplama_Analiz_Formu.resources
+E:\Label Table\Label Table\obj\Debug\Label Table.vbproj.AssemblyReference.cache
+E:\Label Table\Label Table\obj\Debug\Label Table.vbproj.SuggestedBindingRedirects.cache
+E:\Label Table\Label Table\obj\Debug\Label_Table_Foto_Etiketleme_Yazılımı.Anasayfa.resources
+E:\Label Table\Label Table\obj\Debug\Label_Table_Foto_Etiketleme_Yazılımı.Favori_Buton_Duzenleme_Formu.resources
+E:\Label Table\Label Table\obj\Debug\Label_Table_Foto_Etiketleme_Yazılımı.Resources.resources
+E:\Label Table\Label Table\obj\Debug\Label_Table_Foto_Etiketleme_Yazılımı.Obje_isimlendirme_Formu.resources
+E:\Label Table\Label Table\obj\Debug\Label_Table_Foto_Etiketleme_Yazılımı.Veri_Toplama_Analiz_Formu.resources
+E:\Label Table\Label Table\obj\Debug\Label Table.vbproj.GenerateResource.cache
+E:\Label Table\Label Table\obj\Debug\Label Table Foto Etiketleme Yazılımı.exe.licenses
+E:\Label Table\Label Table\obj\Debug\Label Table.vbproj.CoreCompileInputs.cache
+E:\Label Table\Label Table\bin\Debug\Label Table Foto Etiketleme Yazılımı.exe.config
+E:\Label Table\Label Table\bin\Debug\Label Table Foto Etiketleme Yazılımı.exe
+E:\Label Table\Label Table\bin\Debug\Label Table Foto Etiketleme Yazılımı.pdb
+E:\Label Table\Label Table\bin\Debug\Label Table Foto Etiketleme Yazılımı.xml
+E:\Label Table\Label Table\bin\Debug\Newtonsoft.Json.dll
+E:\Label Table\Label Table\bin\Debug\Newtonsoft.Json.xml
+E:\Label Table\Label Table\obj\Debug\Label Table.vbproj.CopyComplete
+E:\Label Table\Label Table\obj\Debug\Label Table Foto Etiketleme Yazılımı.exe
+E:\Label Table\Label Table\obj\Debug\Label Table Foto Etiketleme Yazılımı.xml
+E:\Label Table\Label Table\obj\Debug\Label Table Foto Etiketleme Yazılımı.pdb

@@ -36,18 +36,12 @@ Public Class MyPicturebox
         Invalidate()
     End Sub
 
-    Public Sub Restore()
+    Public Sub Foto_Default()
         service.Restore()
         Invalidate()
     End Sub
 
-    Public Sub ShowImage(ByVal image As Image, ByVal Optional remainTransform As Boolean = True)
-        If Not remainTransform Then
-            service.Restore()
-        End If
 
-        image = image
-    End Sub
 
     Protected Overrides Sub OnMouseDown(ByVal e As MouseEventArgs)
         isMoving = True
@@ -66,10 +60,6 @@ Public Class MyPicturebox
     End Sub
 
     Protected Overrides Sub OnMouseMove(ByVal e As MouseEventArgs)
-
-        Mousex = e.Location.X
-        Mousey = e.Location.Y
-
         'If isMoving Then
 
         ' If Image IsNot Nothing Then
@@ -81,9 +71,10 @@ Public Class MyPicturebox
         '     Invalidate()
         ' End If
 
-
         MyBase.OnMouseMove(e)
     End Sub
+
+
 
     Protected Overrides Sub OnMouseWheel(ByVal e As MouseEventArgs)
         Dim point = TranslatePoint(New PointF(e.Location.X, e.Location.Y))
@@ -117,7 +108,8 @@ Friend Class TransformService
     Private matrixChanged As Boolean = False
     Private matrixInvert As New Matrix()
     Private ReadOnly matrix As New Matrix()
-
+    Private scaleOffsetX As Single
+    Private scaleOffsetY As Single
 
     Public Property ScaleMax() As Single = 1000
 
@@ -154,9 +146,12 @@ Friend Class TransformService
     End Sub
 
     Public Sub Restore()
+
         scale_Conflict = 1
-        scaleOffsetX = scaleOffsetY
-        translateX = translateY
+        scaleOffsetX = 0
+        translateX = 0
+        scaleOffsetX = 0
+        scaleOffsetY = 0
         matrixChanged = True
     End Sub
 

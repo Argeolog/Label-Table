@@ -23,6 +23,8 @@ Partial Class Anasayfa
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Veri_Analiz_Buton = New System.Windows.Forms.Button()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Dogrula_Buton = New System.Windows.Forms.Button()
         Me.Mouse_Koordinat_Ciz_CheckBox = New System.Windows.Forms.CheckBox()
         Me.Sil_Buton = New System.Windows.Forms.Button()
@@ -41,14 +43,15 @@ Partial Class Anasayfa
         Me.Secim_4_Checkbox = New System.Windows.Forms.CheckBox()
         Me.Secilen_Dosyalar_Listbox = New System.Windows.Forms.ListBox()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Oto_Secimleri_Kaldir_CheckBox = New System.Windows.Forms.CheckBox()
+        Me.Tek_Harfleri_Buyuk_Yap_Check = New System.Windows.Forms.CheckBox()
         Me.Son_Etiketi_Default_Getir = New System.Windows.Forms.CheckBox()
-        Me.Ayarlari_Kaydet = New System.Windows.Forms.Button()
         Me.Dosya_Sayisi_Label = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel3 = New System.Windows.Forms.Panel()
-        Me.Resim_Picturebox = New Labeling_Fotograf_Etiketleme_Yazılımı.MyPicturebox()
-        Me.Tek_Harfleri_Buyuk_Yap_Check = New System.Windows.Forms.CheckBox()
+        Me.Resim_Picturebox = New Label_Table_Foto_Etiketleme_Yazılımı.MyPicturebox()
         Me.Panel1.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel2.SuspendLayout()
         Me.Panel3.SuspendLayout()
         CType(Me.Resim_Picturebox, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -59,6 +62,8 @@ Partial Class Anasayfa
         Me.Panel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel1.Controls.Add(Me.Veri_Analiz_Buton)
+        Me.Panel1.Controls.Add(Me.PictureBox1)
         Me.Panel1.Controls.Add(Me.Dogrula_Buton)
         Me.Panel1.Controls.Add(Me.Mouse_Koordinat_Ciz_CheckBox)
         Me.Panel1.Controls.Add(Me.Sil_Buton)
@@ -71,9 +76,27 @@ Partial Class Anasayfa
         Me.Panel1.Size = New System.Drawing.Size(135, 681)
         Me.Panel1.TabIndex = 1
         '
+        'Veri_Analiz_Buton
+        '
+        Me.Veri_Analiz_Buton.Location = New System.Drawing.Point(11, 142)
+        Me.Veri_Analiz_Buton.Name = "Veri_Analiz_Buton"
+        Me.Veri_Analiz_Buton.Size = New System.Drawing.Size(109, 61)
+        Me.Veri_Analiz_Buton.TabIndex = 13
+        Me.Veri_Analiz_Buton.Text = "Veri Toplama Analizi"
+        Me.Veri_Analiz_Buton.UseVisualStyleBackColor = True
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Location = New System.Drawing.Point(11, 465)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(109, 70)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 11
+        Me.PictureBox1.TabStop = False
+        '
         'Dogrula_Buton
         '
-        Me.Dogrula_Buton.Location = New System.Drawing.Point(11, 276)
+        Me.Dogrula_Buton.Location = New System.Drawing.Point(11, 343)
         Me.Dogrula_Buton.Name = "Dogrula_Buton"
         Me.Dogrula_Buton.Size = New System.Drawing.Size(109, 61)
         Me.Dogrula_Buton.TabIndex = 10
@@ -83,7 +106,7 @@ Partial Class Anasayfa
         'Mouse_Koordinat_Ciz_CheckBox
         '
         Me.Mouse_Koordinat_Ciz_CheckBox.AutoSize = True
-        Me.Mouse_Koordinat_Ciz_CheckBox.Location = New System.Drawing.Point(11, 358)
+        Me.Mouse_Koordinat_Ciz_CheckBox.Location = New System.Drawing.Point(11, 413)
         Me.Mouse_Koordinat_Ciz_CheckBox.Name = "Mouse_Koordinat_Ciz_CheckBox"
         Me.Mouse_Koordinat_Ciz_CheckBox.Size = New System.Drawing.Size(123, 17)
         Me.Mouse_Koordinat_Ciz_CheckBox.TabIndex = 9
@@ -105,16 +128,16 @@ Partial Class Anasayfa
         '
         'Sonraki_Foto_Buton
         '
-        Me.Sonraki_Foto_Buton.Location = New System.Drawing.Point(11, 142)
+        Me.Sonraki_Foto_Buton.Location = New System.Drawing.Point(11, 209)
         Me.Sonraki_Foto_Buton.Name = "Sonraki_Foto_Buton"
         Me.Sonraki_Foto_Buton.Size = New System.Drawing.Size(109, 61)
         Me.Sonraki_Foto_Buton.TabIndex = 5
-        Me.Sonraki_Foto_Buton.Text = "Sonraki Fotoğrraf"
+        Me.Sonraki_Foto_Buton.Text = "Sonraki Fotoğraf"
         Me.Sonraki_Foto_Buton.UseVisualStyleBackColor = True
         '
         'Onceki_Foto_Buton
         '
-        Me.Onceki_Foto_Buton.Location = New System.Drawing.Point(11, 209)
+        Me.Onceki_Foto_Buton.Location = New System.Drawing.Point(11, 276)
         Me.Onceki_Foto_Buton.Name = "Onceki_Foto_Buton"
         Me.Onceki_Foto_Buton.Size = New System.Drawing.Size(109, 61)
         Me.Onceki_Foto_Buton.TabIndex = 4
@@ -143,17 +166,16 @@ Partial Class Anasayfa
         '
         Me.Etiket_CheckList.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Etiket_CheckList.CheckOnClick = True
         Me.Etiket_CheckList.FormattingEnabled = True
-        Me.Etiket_CheckList.Location = New System.Drawing.Point(6, 192)
+        Me.Etiket_CheckList.Location = New System.Drawing.Point(6, 182)
         Me.Etiket_CheckList.Name = "Etiket_CheckList"
-        Me.Etiket_CheckList.Size = New System.Drawing.Size(277, 109)
+        Me.Etiket_CheckList.Size = New System.Drawing.Size(277, 139)
         Me.Etiket_CheckList.TabIndex = 1
         '
         'Secim_1_Checkbox
         '
         Me.Secim_1_Checkbox.AutoSize = True
-        Me.Secim_1_Checkbox.Location = New System.Drawing.Point(6, 7)
+        Me.Secim_1_Checkbox.Location = New System.Drawing.Point(6, 33)
         Me.Secim_1_Checkbox.Name = "Secim_1_Checkbox"
         Me.Secim_1_Checkbox.Size = New System.Drawing.Size(128, 17)
         Me.Secim_1_Checkbox.TabIndex = 2
@@ -162,14 +184,14 @@ Partial Class Anasayfa
         '
         'Label_1_TextBox
         '
-        Me.Label_1_TextBox.Location = New System.Drawing.Point(140, 6)
+        Me.Label_1_TextBox.Location = New System.Drawing.Point(140, 32)
         Me.Label_1_TextBox.Name = "Label_1_TextBox"
         Me.Label_1_TextBox.Size = New System.Drawing.Size(141, 20)
         Me.Label_1_TextBox.TabIndex = 3
         '
         'Label_2_TextBox
         '
-        Me.Label_2_TextBox.Location = New System.Drawing.Point(140, 32)
+        Me.Label_2_TextBox.Location = New System.Drawing.Point(140, 58)
         Me.Label_2_TextBox.Name = "Label_2_TextBox"
         Me.Label_2_TextBox.Size = New System.Drawing.Size(141, 20)
         Me.Label_2_TextBox.TabIndex = 5
@@ -177,7 +199,7 @@ Partial Class Anasayfa
         'Secim_2_Checkbox
         '
         Me.Secim_2_Checkbox.AutoSize = True
-        Me.Secim_2_Checkbox.Location = New System.Drawing.Point(6, 33)
+        Me.Secim_2_Checkbox.Location = New System.Drawing.Point(6, 59)
         Me.Secim_2_Checkbox.Name = "Secim_2_Checkbox"
         Me.Secim_2_Checkbox.Size = New System.Drawing.Size(128, 17)
         Me.Secim_2_Checkbox.TabIndex = 4
@@ -186,7 +208,7 @@ Partial Class Anasayfa
         '
         'Label_3_TextBox
         '
-        Me.Label_3_TextBox.Location = New System.Drawing.Point(140, 58)
+        Me.Label_3_TextBox.Location = New System.Drawing.Point(140, 84)
         Me.Label_3_TextBox.Name = "Label_3_TextBox"
         Me.Label_3_TextBox.Size = New System.Drawing.Size(141, 20)
         Me.Label_3_TextBox.TabIndex = 7
@@ -194,7 +216,7 @@ Partial Class Anasayfa
         'Secim_3_Checkbox
         '
         Me.Secim_3_Checkbox.AutoSize = True
-        Me.Secim_3_Checkbox.Location = New System.Drawing.Point(6, 59)
+        Me.Secim_3_Checkbox.Location = New System.Drawing.Point(6, 85)
         Me.Secim_3_Checkbox.Name = "Secim_3_Checkbox"
         Me.Secim_3_Checkbox.Size = New System.Drawing.Size(128, 17)
         Me.Secim_3_Checkbox.TabIndex = 6
@@ -203,7 +225,7 @@ Partial Class Anasayfa
         '
         'Label_4_TextBox
         '
-        Me.Label_4_TextBox.Location = New System.Drawing.Point(140, 84)
+        Me.Label_4_TextBox.Location = New System.Drawing.Point(140, 110)
         Me.Label_4_TextBox.Name = "Label_4_TextBox"
         Me.Label_4_TextBox.Size = New System.Drawing.Size(141, 20)
         Me.Label_4_TextBox.TabIndex = 9
@@ -211,7 +233,7 @@ Partial Class Anasayfa
         'Secim_4_Checkbox
         '
         Me.Secim_4_Checkbox.AutoSize = True
-        Me.Secim_4_Checkbox.Location = New System.Drawing.Point(6, 85)
+        Me.Secim_4_Checkbox.Location = New System.Drawing.Point(6, 111)
         Me.Secim_4_Checkbox.Name = "Secim_4_Checkbox"
         Me.Secim_4_Checkbox.Size = New System.Drawing.Size(128, 17)
         Me.Secim_4_Checkbox.TabIndex = 8
@@ -225,18 +247,18 @@ Partial Class Anasayfa
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Secilen_Dosyalar_Listbox.FormattingEnabled = True
         Me.Secilen_Dosyalar_Listbox.HorizontalScrollbar = True
-        Me.Secilen_Dosyalar_Listbox.Location = New System.Drawing.Point(6, 333)
+        Me.Secilen_Dosyalar_Listbox.Location = New System.Drawing.Point(6, 359)
         Me.Secilen_Dosyalar_Listbox.Name = "Secilen_Dosyalar_Listbox"
-        Me.Secilen_Dosyalar_Listbox.Size = New System.Drawing.Size(277, 342)
+        Me.Secilen_Dosyalar_Listbox.Size = New System.Drawing.Size(277, 316)
         Me.Secilen_Dosyalar_Listbox.TabIndex = 0
         '
         'Panel2
         '
         Me.Panel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel2.Controls.Add(Me.Oto_Secimleri_Kaldir_CheckBox)
         Me.Panel2.Controls.Add(Me.Tek_Harfleri_Buyuk_Yap_Check)
         Me.Panel2.Controls.Add(Me.Son_Etiketi_Default_Getir)
-        Me.Panel2.Controls.Add(Me.Ayarlari_Kaydet)
         Me.Panel2.Controls.Add(Me.Dosya_Sayisi_Label)
         Me.Panel2.Controls.Add(Me.Label1)
         Me.Panel2.Controls.Add(Me.Etiket_CheckList)
@@ -254,31 +276,42 @@ Partial Class Anasayfa
         Me.Panel2.Size = New System.Drawing.Size(292, 677)
         Me.Panel2.TabIndex = 10
         '
+        'Oto_Secimleri_Kaldir_CheckBox
+        '
+        Me.Oto_Secimleri_Kaldir_CheckBox.AutoSize = True
+        Me.Oto_Secimleri_Kaldir_CheckBox.Location = New System.Drawing.Point(6, 9)
+        Me.Oto_Secimleri_Kaldir_CheckBox.Name = "Oto_Secimleri_Kaldir_CheckBox"
+        Me.Oto_Secimleri_Kaldir_CheckBox.Size = New System.Drawing.Size(187, 17)
+        Me.Oto_Secimleri_Kaldir_CheckBox.TabIndex = 14
+        Me.Oto_Secimleri_Kaldir_CheckBox.Text = "Otomatik Seçimleri Kaldır \ İşaretle"
+        Me.Oto_Secimleri_Kaldir_CheckBox.UseVisualStyleBackColor = True
+        '
+        'Tek_Harfleri_Buyuk_Yap_Check
+        '
+        Me.Tek_Harfleri_Buyuk_Yap_Check.AutoSize = True
+        Me.Tek_Harfleri_Buyuk_Yap_Check.Location = New System.Drawing.Point(6, 159)
+        Me.Tek_Harfleri_Buyuk_Yap_Check.Name = "Tek_Harfleri_Buyuk_Yap_Check"
+        Me.Tek_Harfleri_Buyuk_Yap_Check.Size = New System.Drawing.Size(136, 17)
+        Me.Tek_Harfleri_Buyuk_Yap_Check.TabIndex = 13
+        Me.Tek_Harfleri_Buyuk_Yap_Check.Text = "Tek Harfleri Büyük Yap"
+        Me.Tek_Harfleri_Buyuk_Yap_Check.UseVisualStyleBackColor = True
+        '
         'Son_Etiketi_Default_Getir
         '
         Me.Son_Etiketi_Default_Getir.AutoSize = True
-        Me.Son_Etiketi_Default_Getir.Location = New System.Drawing.Point(6, 112)
+        Me.Son_Etiketi_Default_Getir.Location = New System.Drawing.Point(6, 138)
         Me.Son_Etiketi_Default_Getir.Name = "Son_Etiketi_Default_Getir"
         Me.Son_Etiketi_Default_Getir.Size = New System.Drawing.Size(199, 17)
         Me.Son_Etiketi_Default_Getir.TabIndex = 12
         Me.Son_Etiketi_Default_Getir.Text = "Yeni Etikette En Son Eklediğimi Getir"
         Me.Son_Etiketi_Default_Getir.UseVisualStyleBackColor = True
         '
-        'Ayarlari_Kaydet
-        '
-        Me.Ayarlari_Kaydet.Location = New System.Drawing.Point(6, 151)
-        Me.Ayarlari_Kaydet.Name = "Ayarlari_Kaydet"
-        Me.Ayarlari_Kaydet.Size = New System.Drawing.Size(277, 35)
-        Me.Ayarlari_Kaydet.TabIndex = 6
-        Me.Ayarlari_Kaydet.Text = "Ayarları Kaydet"
-        Me.Ayarlari_Kaydet.UseVisualStyleBackColor = True
-        '
         'Dosya_Sayisi_Label
         '
         Me.Dosya_Sayisi_Label.AutoSize = True
         Me.Dosya_Sayisi_Label.Font = New System.Drawing.Font("Segoe UI Semibold", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(162, Byte))
         Me.Dosya_Sayisi_Label.ForeColor = System.Drawing.Color.FromArgb(CType(CType(59, Byte), Integer), CType(CType(59, Byte), Integer), CType(CType(59, Byte), Integer))
-        Me.Dosya_Sayisi_Label.Location = New System.Drawing.Point(128, 302)
+        Me.Dosya_Sayisi_Label.Location = New System.Drawing.Point(128, 328)
         Me.Dosya_Sayisi_Label.Name = "Dosya_Sayisi_Label"
         Me.Dosya_Sayisi_Label.Size = New System.Drawing.Size(42, 25)
         Me.Dosya_Sayisi_Label.TabIndex = 11
@@ -289,7 +322,7 @@ Partial Class Anasayfa
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(162, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(59, Byte), Integer), CType(CType(59, Byte), Integer), CType(CType(59, Byte), Integer))
-        Me.Label1.Location = New System.Drawing.Point(7, 302)
+        Me.Label1.Location = New System.Drawing.Point(7, 328)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(125, 24)
         Me.Label1.TabIndex = 10
@@ -317,16 +350,6 @@ Partial Class Anasayfa
         Me.Resim_Picturebox.TabIndex = 0
         Me.Resim_Picturebox.TabStop = False
         '
-        'Tek_Harfleri_Buyuk_Yap_Check
-        '
-        Me.Tek_Harfleri_Buyuk_Yap_Check.AutoSize = True
-        Me.Tek_Harfleri_Buyuk_Yap_Check.Location = New System.Drawing.Point(6, 133)
-        Me.Tek_Harfleri_Buyuk_Yap_Check.Name = "Tek_Harfleri_Buyuk_Yap_Check"
-        Me.Tek_Harfleri_Buyuk_Yap_Check.Size = New System.Drawing.Size(136, 17)
-        Me.Tek_Harfleri_Buyuk_Yap_Check.TabIndex = 13
-        Me.Tek_Harfleri_Buyuk_Yap_Check.Text = "Tek Harfleri Büyük Yap"
-        Me.Tek_Harfleri_Buyuk_Yap_Check.UseVisualStyleBackColor = True
-        '
         'Anasayfa
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -341,6 +364,7 @@ Partial Class Anasayfa
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
         Me.Panel3.ResumeLayout(False)
@@ -366,7 +390,6 @@ Partial Class Anasayfa
     Friend WithEvents Panel2 As Panel
     Friend WithEvents Dosya_Sayisi_Label As Label
     Friend WithEvents Label1 As Label
-    Friend WithEvents Ayarlari_Kaydet As Button
     Friend WithEvents Sil_Buton As Button
     Friend WithEvents Mouse_Koordinat_Ciz_CheckBox As CheckBox
     Friend WithEvents Panel3 As Panel
@@ -374,4 +397,7 @@ Partial Class Anasayfa
     Friend WithEvents Dogrula_Buton As Button
     Friend WithEvents Son_Etiketi_Default_Getir As CheckBox
     Friend WithEvents Tek_Harfleri_Buyuk_Yap_Check As CheckBox
+    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents Veri_Analiz_Buton As Button
+    Friend WithEvents Oto_Secimleri_Kaldir_CheckBox As CheckBox
 End Class

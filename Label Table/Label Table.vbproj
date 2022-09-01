@@ -6,9 +6,9 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C86BA1B2-CBB3-4B95-BC3A-AF5E3BF33451}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>Labeling_Fotograf_Etiketleme_Yazılımı.My.MyApplication</StartupObject>
-    <RootNamespace>Labeling_Fotograf_Etiketleme_Yazılımı</RootNamespace>
-    <AssemblyName>Labeling Fotograf Etiketleme Yazılımı</AssemblyName>
+    <StartupObject>Label_Table_Foto_Etiketleme_Yazılımı.My.MyApplication</StartupObject>
+    <RootNamespace>Label_Table_Foto_Etiketleme_Yazılımı</RootNamespace>
+    <AssemblyName>Label Table Foto Etiketleme Yazılımı</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -23,7 +23,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>Labeling Fotograf Etiketleme Yazılımı.xml</DocumentationFile>
+    <DocumentationFile>Label Table Foto Etiketleme Yazılımı.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -33,7 +33,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>Labeling Fotograf Etiketleme Yazılımı.xml</DocumentationFile>
+    <DocumentationFile>Label Table Foto Etiketleme Yazılımı.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -60,6 +60,7 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -122,6 +123,12 @@
     <Compile Include="Obje_isimlendirme_Formu.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Veri_Toplama_Analiz_Formu.Designer.vb">
+      <DependentUpon>Veri_Toplama_Analiz_Formu.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Veri_Toplama_Analiz_Formu.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Anasayfa.resx">
@@ -139,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Obje_isimlendirme_Formu.resx">
       <DependentUpon>Obje_isimlendirme_Formu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Veri_Toplama_Analiz_Formu.resx">
+      <DependentUpon>Veri_Toplama_Analiz_Formu.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
